@@ -7,13 +7,13 @@ const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");
 
+// ================= PROTECTED PROFILE API =================
 router.get("/profile", authMiddleware, async (req, res) => {
   res.json({
     message: "Protected route accessed",
     userId: req.userId
   });
 });
-
 
 // ================= REGISTER API =================
 router.post("/register", async (req, res) => {
@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({
+    const newUser = await User.create({
       name,
       email,
       password: hashedPassword,
@@ -41,11 +41,17 @@ router.post("/register", async (req, res) => {
       skillsWanted
     });
 
-    await newUser.save();
+    // 🔐 CREATE JWT TOKEN (🔥 THIS WAS MISSING)
+    const token = jwt.sign(
+      { userId: newUser._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
+    // ✅ SEND TOKEN TO FRONTEND
     res.status(201).json({
       message: "User registered successfully",
-      userId: newUser._id
+      token
     });
 
   } catch (error) {
@@ -54,10 +60,8 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
 // ================= LOGIN API =================
 router.post("/login", async (req, res) => {
-  
   try {
     const { email, password } = req.body;
 
@@ -90,6 +94,5 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
 
 module.exports = router;
