@@ -1,36 +1,29 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
-    <nav style={styles.nav}>
-      <h3 style={styles.logo}>Skill Exchange</h3>
+    <nav className="navbar">
+      <h2>Skill Exchange</h2>
+
       <div>
-        <Link to="/" style={styles.link}>Home</Link>
-        <Link to="/register" style={styles.link}>Register</Link>
-        <Link to="/login" style={styles.link}>Login</Link>
-        <Link to="/dashboard" style={styles.link}>Dashboard</Link>
+        <Link to="/">Home</Link>
+
+        {!token && <Link to="/register">Register</Link>}
+        {!token && <Link to="/login">Login</Link>}
+
+        {token && <Link to="/dashboard">Dashboard</Link>}
+        {token && <button onClick={handleLogout}>Logout</button>}
       </div>
     </nav>
   );
 }
-
-const styles = {
-  nav: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "15px 30px",
-    backgroundColor: "#222",
-  },
-  logo: {
-    color: "#fff",
-  },
-  link: {
-    color: "#fff",
-    marginLeft: "20px",
-    textDecoration: "none",
-    fontWeight: "bold",
-  }
-};
 
 export default Navbar;
