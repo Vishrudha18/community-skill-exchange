@@ -1,0 +1,182 @@
+/* ============================= */
+/* PAGE CONTAINER */
+/* ============================= */
+
+.requests-container {
+  padding: 40px;
+  min-height: 100vh;
+  color: #e5e7eb;
+  background: radial-gradient(
+    circle at top right,
+    #0f172a,
+    #020617 70%
+  );
+}
+
+.requests-container h1,
+.requests-container h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #f8fafc;
+}
+
+/* ============================= */
+/* TABS */
+/* ============================= */
+
+.tabs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.tab {
+  padding: 10px 24px;
+  border-radius: 999px;
+  background: #020617;
+  color: #cbd5f5;
+  border: 1px solid #1e293b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  background: #020617cc;
+}
+
+.tab.active {
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  color: #020617;
+  font-weight: 700;
+}
+
+/* ============================= */
+/* REQUEST CARD */
+/* ============================= */
+
+.request-card {
+  background: linear-gradient(145deg, #020617, #0b1220);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #1e293b;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.request-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Skill title */
+.request-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #38bdf8;
+}
+
+/* Text */
+.request-card p {
+  margin: 6px 0;
+  color: #cbd5f5;
+  font-size: 15px;
+}
+
+/* ============================= */
+/* ACTION BUTTONS */
+/* ============================= */
+
+.actions {
+  margin-top: 16px;
+}
+
+.actions button {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: opacity 0.3s ease;
+}
+
+/* Accept */
+.actions .accept {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: #022c22;
+}
+
+/* Reject */
+.actions .reject {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.actions button:hover {
+  opacity: 0.9;
+}
+
+/* ============================= */
+/* STATUS BADGES */
+/* ============================= */
+
+.badge {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Status colors */
+.badge.pending {
+  background: linear-gradient(90deg, #facc15, #eab308);
+  color: #422006;
+}
+
+.badge.accepted {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: #022c22;
+}
+
+.badge.rejected {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+  color: white;
+}
+
+/* ============================= */
+/* CONTACT INFO */
+/* ============================= */
+
+.contact {
+  margin-top: 14px;
+  font-size: 14px;
+  color: #93c5fd;
+}
+
+/* ============================= */
+/* SKELETON LOADER */
+/* ============================= */
+
+.skeleton {
+  height: 120px;
+  border-radius: 16px;
+  background: linear-gradient(
+    90deg,
+    #020617 25%,
+    #0b1220 37%,
+    #020617 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}

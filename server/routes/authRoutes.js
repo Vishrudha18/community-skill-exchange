@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Skill = require("../models/Skill");
 
 const router = express.Router();
 
@@ -10,64 +11,90 @@ const authMiddleware = require("../middleware/authMiddleware");
 // ================= PROTECTED PROFILE API =================
 router.get("/profile", authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select("-password");
+    const user = await User.findById(req.user.id).select("-password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(user);
+    res.json(user);
   } catch (error) {
-    console.error("PROFILE ERROR:", error);
+    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+// ================= MATCH USERS BY SKILLS =================
+router.get("/match", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // placeholder response for now
+    res.json({
+      message: "Match route working",
+      userId: user._id
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 // ================= REGISTER API =================
 router.post("/register", async (req, res) => {
   try {
-    console.log("REQ BODY:", req.body);
-
     const { name, email, password, skillsOffered, skillsWanted } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const userExists = await User.findOne({ email });
+    if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = await User.create({
+    const user = await User.create({
       name,
       email,
-      password: hashedPassword,
+      password,
       skillsOffered,
-      skillsWanted
+      skillsWanted,
     });
 
-    // 🔐 CREATE JWT TOKEN (🔥 THIS WAS MISSING)
-    const token = jwt.sign(
-      { userId: newUser._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    // 🔥 AUTO-CREATE OFFERED SKILLS
+    if (skillsOffered && skillsOffered.length > 0) {
+      const offeredSkills = skillsOffered.map(skill => ({
+        name: skill,
+        category: "General",
+        level: "Intermediate",
+        type: "offer",
+        user: user._id,
+      }));
 
-    // ✅ SEND TOKEN TO FRONTEND
-    res.status(201).json({
-      message: "User registered successfully",
-      token
-    });
+      await Skill.insertMany(offeredSkills);
+    }
 
+    // 🔥 AUTO-CREATE WANTED SKILLS
+    if (skillsWanted && skillsWanted.length > 0) {
+      const wantedSkills = skillsWanted.map(skill => ({
+        name: skill,
+        category: "General",
+        level: "Beginner",
+        type: "learn",
+        user: user._id,
+      }));
+
+      await Skill.insertMany(wantedSkills);
+    }
+
+    res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error("🔥 REGISTER API ERROR 🔥", error);
-    res.status(500).json({ message: "Server error" });
+    console.error(error);
+    res.status(500).json({ message: "Registration failed" });
   }
 });
+
 
 // ================= LOGIN API =================
 router.post("/login", async (req, res) => {
@@ -88,10 +115,11 @@ router.post("/login", async (req, res) => {
 
     // 3️⃣ Generate JWT
     const token = jwt.sign(
-      { userId: user._id },
+      { id: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1d" }
     );
+
 
     res.status(200).json({
       message: "Login successful",
@@ -103,5 +131,16 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+/* existing routes above */
+
+// 🔐 PROTECTED ROUTE
+router.get("/protected", authMiddleware, (req, res) => {
+  res.json({
+    message: "Protected route accessed",
+    userId: req.userId
+  });
+});
+
 
 module.exports = router;

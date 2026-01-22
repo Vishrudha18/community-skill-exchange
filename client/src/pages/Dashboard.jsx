@@ -1,3 +1,4 @@
+import "./Dashboard.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -36,29 +37,39 @@ function Dashboard() {
   }
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h1>Dashboard</h1>
+  <div className="dashboard-container">
+    <h1 className="dashboard-title">Dashboard</h1>
 
-      <p><strong>Name:</strong> {user.name}</p>
-      <p><strong>Email:</strong> {user.email}</p>
+    <div className="card-grid">
+      <div className="card">
+        <h3>Welcome</h3>
+        <p><strong>Name:</strong> {user.name}</p>
+        <p><strong>Email:</strong> {user.email}</p>
+      </div>
 
-      <h3>Skills Offered</h3>
-      <ul>
-        {user.skillsOffered.map((skill, index) => (
-          <li key={index}>{skill}</li>
-        ))}
-      </ul>
+      <div className="card">
+        <h3>Skills Offered</h3>
+        <ul className="skill-list">
+          {user.skillsOffered.map((skill, index) => (
+            <li key={index}>{skill}</li>
+          ))}
+        </ul>
+      </div>
 
-      <h3>Skills Wanted</h3>
-      <ul>
-        {user.skillsWanted.map((skill, index) => (
-          <li key={index}>{skill}</li>
-        ))}
-      </ul>
-
-      <p style={{ color: "green" }}>✅ JWT protected dashboard</p>
+      <div className="card">
+        <h3>Skills Wanted</h3>
+        <ul className="skill-list">
+          {user.skillsWanted.map((skill, index) => (
+            <li key={index}>{skill}</li>
+          ))}
+        </ul>
+      </div>
     </div>
-  );
+
+    <p className="status">✅ JWT protected dashboard</p>
+  </div>
+);
+
 }
 
 export default Dashboard;

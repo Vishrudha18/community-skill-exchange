@@ -1,0 +1,38 @@
+.benefits {
+  padding: 80px 10%;
+  background: #ffffff;
+}
+
+.benefits h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+  color: black;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.benefit-card {
+  background: #0d276a;
+  padding: 30px;
+  border-radius: 14px;
+}
+
+.benefit-card h3 {
+  margin-bottom: 15px;
+  color: #2e5cb1;
+}
+
+.benefit-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.benefit-card li {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}

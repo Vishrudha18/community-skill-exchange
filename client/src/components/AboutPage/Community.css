@@ -1,0 +1,36 @@
+.community {
+  padding: 90px 10%;
+  background: linear-gradient(135deg, #2a5298, #1e3c72);
+  color: white;
+}
+
+.community h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.community p {
+  max-width: 800px;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  opacity: 0.95;
+}
+
+.community-btn {
+  margin-top: 30px;
+  padding: 14px 32px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1e3c72;
+  background: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.community-btn:hover {
+  background: #e6ecff;
+  transform: translateY(-3px);
+}
+

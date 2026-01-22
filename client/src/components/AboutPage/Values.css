@@ -1,0 +1,25 @@
+.values {
+  padding: 80px 10%;
+  background: #ffffff;
+}
+
+.values h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+}
+
+.values ul {
+  list-style: none;
+  max-width: 600px;
+  margin: auto;
+  padding: 0;
+}
+
+.values li {
+  background: #f4f6fb;
+  margin-bottom: 15px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+}

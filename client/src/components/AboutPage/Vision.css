@@ -1,0 +1,16 @@
+.vision {
+  padding: 80px 10%;
+  background: #f9fafb;
+}
+
+.vision h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.vision p {
+  max-width: 900px;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #555;
+}

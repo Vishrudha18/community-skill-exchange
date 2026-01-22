@@ -1,0 +1,48 @@
+.cta-section {
+  padding: 6rem 8%;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  text-align: center;
+  color: #020617;
+}
+
+.cta-section h2 {
+  font-size: 2.6rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.cta-section p {
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-btn {
+  padding: 0.9rem 2.4rem;
+  border-radius: 30px;
+  border: none;
+  background: #020617;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .cta-section {
+    padding: 5rem 6%;
+  }
+
+  .cta-section h2 {
+    font-size: 2.1rem;
+  }
+}
