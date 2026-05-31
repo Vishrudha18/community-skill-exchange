@@ -1,0 +1,81 @@
+.profile-card {
+  max-width: 1100px;
+  margin: 40px auto 80px;
+  background: linear-gradient(145deg, #020617, #0b1220);
+  border-radius: 24px;
+  padding: 30px;
+  color: #e5e7eb;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.profile-card h2 {
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #38bdf8;
+}
+
+.profile-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.profile-info p {
+  font-size: 15px;
+  color: #cbd5f5;
+}
+
+.skills-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.skills-section h4 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.skill-pill {
+  display: inline-block;
+  margin: 6px 6px 0 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.skill-pill.offer {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: #022c22;
+}
+
+.skill-pill.learn {
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  color: #020617;
+}
+
+.empty {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* Skeleton */
+.skeleton {
+  height: 220px;
+  border-radius: 24px;
+  background: linear-gradient(
+    90deg,
+    #020617 25%,
+    #0b1220 37%,
+    #020617 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}

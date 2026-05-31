@@ -1,0 +1,114 @@
+/* MAIN WRAPPER — FULL WIDTH LIKE RECENT REQUESTS */
+.my {
+  max-width: 1100px;
+  margin: 60px 160px;
+  padding: 0 20px;
+}
+
+/* SECTION TITLE */
+.my h2 {
+  font-size: 28px;
+  margin-left: 30px;
+  margin-bottom: 24px;
+  color: #38bdf8;
+}
+
+/* FORM */
+.skill-form {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr 1fr auto;
+  gap: 16px;
+  margin-left: 30px;
+  margin-bottom: 30px;
+  align-items: center;
+}
+
+.skill-form input,
+.skill-form select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+.skill-form button {
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* SKILLS LIST */
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* SKILL CARD — MATCHES RECENT REQUESTS STYLE */
+.skill-item {
+  background: linear-gradient(145deg, #020617, #0b1220);
+  padding: 24px 28px;
+  border-radius: 18px;
+  border: 1px solid #1e293b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* TEXT */
+.skill-item h4 {
+  font-size: 20px;
+  color: #f8fafc;
+  margin-bottom: 6px;
+}
+
+.skill-item p {
+  font-size: 14px;
+  color: #cbd5f5;
+}
+
+/* BADGES */
+.badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge.offer {
+  background: #22c55e;
+  color: #022c22;
+}
+
+.badge.learn {
+  background: #facc15;
+  color: #422006;
+}
+
+/* DELETE BUTTON */
+.delete {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: #ef4444;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.delete:hover {
+  transform: scale(1.1);
+}
+
+/* EMPTY TEXT */
+.empty {
+  color: #94a3b8;
+}

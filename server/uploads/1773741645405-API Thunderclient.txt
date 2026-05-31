@@ -1,0 +1,74 @@
+GET http://localhost:5000/api/skills
+POST http://localhost:5000/api/auth/register
+POST http://localhost:5000/api/auth/login
+POST http://localhost:5000/api/requests
+POST http://localhost:5000/api/skills
+GET http://localhost:5000/api/auth/profile
+GET http://localhost:5000/api/auth/protected
+GET http://localhost:5000/api/auth/match
+GET http://localhost:5000/api/match
+PATCH http://localhost:5000/api/requests/6960db666b04134d0da43740
+DELETE http://localhost:5000/api/skills/6965be89e8b2f1ae80e0f934
+GET http://localhost:5000/api/skills/my
+GET http://localhost:5000/api/requests/sent
+GET http://localhost:5000/api/requests/received
+GET http://localhost:5000/api/notifications
+PATCH http://localhost:5000/api/notifications/read
+
+6️⃣ Your API list – final verification
+
+You asked if any API is missing 👇
+Here is the final validated list:
+
+✅ Auth
+
+POST /api/auth/register
+
+POST /api/auth/login
+
+GET /api/auth/profile
+
+GET /api/auth/protected
+
+GET /api/auth/match (placeholder)
+
+✅ Skills
+
+POST /api/skills
+
+GET /api/skills/my
+
+DELETE /api/skills/:id
+
+❗ GET /api/skills → only exists if you created public route
+
+If not → expected 404 (you saw this)
+
+✅ Requests
+
+POST /api/requests
+
+GET /api/requests/sent
+
+GET /api/requests/received
+
+PATCH /api/requests/:id
+
+✅ Notifications
+
+GET /api/notifications
+
+PATCH /api/notifications/read
+
+🚫 No missing APIs for current features.
+
+
+
+
+
+
+
+
+
+
+

@@ -1,54 +1,20 @@
 /* ============================= */
-/* PAGE CONTAINER */
+/* PAGE */
 /* ============================= */
 
-.requests-container {
+.requests-page {
   padding: 40px;
   min-height: 100vh;
+  background: radial-gradient(circle at top right, #0f172a, #020617 70%);
   color: #e5e7eb;
-  background: radial-gradient(
-    circle at top right,
-    #0f172a,
-    #020617 70%
-  );
 }
 
-.requests-container h1,
-.requests-container h2 {
+.requests-page h1,
+.requests-page h2 {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 30px;
   color: #f8fafc;
-}
-
-/* ============================= */
-/* TABS */
-/* ============================= */
-
-.tabs {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 30px;
-}
-
-.tab {
-  padding: 10px 24px;
-  border-radius: 999px;
-  background: #020617;
-  color: #cbd5f5;
-  border: 1px solid #1e293b;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.tab:hover {
-  background: #020617cc;
-}
-
-.tab.active {
-  background: linear-gradient(90deg, #38bdf8, #6366f1);
-  color: #020617;
-  font-weight: 700;
 }
 
 /* ============================= */
@@ -62,6 +28,12 @@
   margin-bottom: 24px;
   border: 1px solid #1e293b;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
   transition: transform 0.3s ease;
 }
 
@@ -69,114 +41,186 @@
   transform: translateY(-4px);
 }
 
-/* Skill title */
+/* ============================= */
+/* INFO */
+/* ============================= */
+
+.request-info h3,
 .request-card h3 {
   font-size: 22px;
-  margin-bottom: 10px;
   color: #38bdf8;
+  margin-bottom: 8px;
 }
 
-/* Text */
+.request-info p,
 .request-card p {
-  margin: 6px 0;
-  color: #cbd5f5;
+  margin: 4px 0;
+  color: #cbd5e1;
   font-size: 15px;
 }
 
 /* ============================= */
-/* ACTION BUTTONS */
+/* ACTIONS */
 /* ============================= */
 
-.actions {
-  margin-top: 16px;
+.request-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.actions button {
-  padding: 10px 18px;
+.btn {
+  padding: 10px 20px;
   border-radius: 999px;
   border: none;
   font-weight: 600;
   cursor: pointer;
-  margin-right: 12px;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: scale(1.03);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Accept */
-.actions .accept {
+.btn.accept {
   background: linear-gradient(90deg, #22c55e, #16a34a);
   color: #022c22;
 }
 
 /* Reject */
-.actions .reject {
+.btn.reject {
   background: linear-gradient(90deg, #ef4444, #dc2626);
   color: white;
 }
 
-.actions button:hover {
-  opacity: 0.9;
+/* Cancel */
+.btn.cancel {
+  background: linear-gradient(90deg, #f97316, #ea580c);
+  color: white;
+  margin-top: 12px;
 }
 
 /* ============================= */
-/* STATUS BADGES */
+/* BADGES */
 /* ============================= */
 
 .badge {
-  display: inline-block;
-  margin-top: 16px;
   padding: 8px 18px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.05em;
   text-transform: uppercase;
+  display: inline-block;
+  margin-top: 12px;
 }
 
-/* Status colors */
+/* Pending */
 .badge.pending {
   background: linear-gradient(90deg, #facc15, #eab308);
   color: #422006;
 }
 
+/* Accepted */
 .badge.accepted {
   background: linear-gradient(90deg, #22c55e, #16a34a);
   color: #022c22;
 }
 
+/* Rejected */
 .badge.rejected {
   background: linear-gradient(90deg, #ef4444, #dc2626);
   color: white;
 }
 
+/* Cancelled */
+.badge.cancelled {
+  background: linear-gradient(90deg, #64748b, #475569);
+  color: white;
+}
+
 /* ============================= */
-/* CONTACT INFO */
+/* CONTACT */
 /* ============================= */
 
 .contact {
-  margin-top: 14px;
+  margin-top: 12px;
+  color: #94a3b8;
   font-size: 14px;
-  color: #93c5fd;
 }
 
 /* ============================= */
-/* SKELETON LOADER */
+/* TABS */
 /* ============================= */
 
-.skeleton {
-  height: 120px;
-  border-radius: 16px;
-  background: linear-gradient(
-    90deg,
-    #020617 25%,
-    #0b1220 37%,
-    #020617 63%
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.4s infinite;
-  margin-bottom: 20px;
+.tabs {
+  display: inline-flex;
+  gap: 14px;
+  margin-bottom: 36px;
+  background: #020617;
+  padding: 6px;
+  border-radius: 999px;
+  border: 1px solid #1e293b;
 }
 
-@keyframes shimmer {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+.tab {
+  padding: 10px 26px;
+  border-radius: 999px;
+  background: transparent;
+  color: #cbd5e1;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.tab:hover {
+  color: #f8fafc;
+}
+
+.tab.active {
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  color: #020617;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .requests-page {
+    padding: 20px;
+  }
+
+  .request-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .request-actions {
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .tabs {
+    width: 100%;
+    display: flex;
+  }
+
+  .tab {
+    flex: 1;
+    text-align: center;
+  }
 }

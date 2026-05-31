@@ -1,0 +1,177 @@
+.session-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.session-card {
+  width: 100%;
+  max-width: 480px;
+  background: #1e293b;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+/* HEADER */
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.session-header h2 {
+  font-size: 20px;
+}
+
+.status-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.live-badge {
+  background: #ef4444;
+  color: white;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  animation: pulse 1s infinite;
+}
+
+.countdown {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #38bdf8;
+}
+
+.join-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* STATUS */
+.status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.status.scheduled {
+  background: #facc15;
+  color: black;
+}
+
+.status.cancelled {
+  background: #ef4444;
+}
+
+.status.completed {
+  background: #22c55e;
+}
+
+/* INFO */
+.session-info {
+  margin-bottom: 20px;
+}
+
+.session-info p {
+  font-size: 14px;
+  margin: 6px 0;
+  color: #cbd5f5;
+}
+
+.session-info span {
+  color: #94a3b8;
+  margin-right: 6px;
+}
+
+/* SCHEDULE BOX */
+.schedule-box {
+  background: #020617;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.schedule-box h4 {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputs input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #1e293b;
+  color: white;
+}
+
+/* BUTTONS */
+.primary-btn {
+  margin-top: 12px;
+  background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.join-btn {
+  flex: 1;
+  background: #22c55e;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  flex: 1;
+  background: #ef4444;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* WAIT TEXT */
+.waiting-text {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.live-text {
+  color: #ef4444;
+  font-weight: bold;
+}

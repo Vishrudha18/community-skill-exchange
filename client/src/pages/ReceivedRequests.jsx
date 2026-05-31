@@ -1,101 +1,129 @@
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useEffect, useState, useCallback } from "react";
 import "./Requests.css";
 
-const ReceivedRequests = () => {
+function ReceivedRequests() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updatingId, setUpdatingId] = useState(null);
+
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
+    try {
+      setLoading(true);
+
       const res = await fetch(
         "http://localhost:5000/api/requests/received",
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
       const data = await res.json();
-      setRequests(data);
-      setLoading(false);
-    };
 
-    fetchRequests();
+      if (!res.ok) {
+        alert(data.message || "Failed to fetch requests");
+        return;
+      }
+
+      setRequests(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }, [token]);
 
-  const updateStatus = async (id, status) => {
+  useEffect(() => {
+    if (token) fetchRequests();
+  }, [token, fetchRequests]);
+
+  const updateStatus = async (id, action) => {
     try {
-      await fetch(`http://localhost:5000/api/requests/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status }),
-      });
+      setUpdatingId(id);
 
-      toast.success(`Request ${status}`);
+      const res = await fetch(
+        `http://localhost:5000/api/requests/${id}/${action}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      setRequests(prev =>
-        prev.map(r =>
-          r._id === id ? { ...r, status } : r
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Failed to update request");
+        return;
+      }
+
+      setRequests((prev) =>
+        prev.map((req) =>
+          req._id === id
+            ? { ...req, status: action === "accept" ? "accepted" : "rejected" }
+            : req
         )
       );
-    } catch {
-      toast.error("Action failed");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update request");
+    } finally {
+      setUpdatingId(null);
     }
   };
 
-  if (loading) {
-    return (
-      <>
-        <div className="skeleton"></div>
-        <div className="skeleton"></div>
-      </>
-    );
-  }
-
   return (
-    <>
-      {requests.length === 0 ? (
+    <div className="requests-page">
+      <h2>Received Requests</h2>
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : requests.length === 0 ? (
         <p>No requests received</p>
       ) : (
-        requests.map(req => (
+        requests.map((req) => (
           <div className="request-card" key={req._id}>
-            <h3>{req.skill.name}</h3>
-            <p>Level: {req.skill.level}</p>
-            <p>
-              From: <strong>{req.requester.name}</strong>
-            </p>
+            <div className="request-info">
+              <h3>{req.skill?.name || "Unknown Skill"}</h3>
+              <p>Level: {req.skill?.level || "N/A"}</p>
+              <p>From: {req.requester?.name || "Unknown"}</p>
+              <p>Email: {req.requester?.email || "N/A"}</p>
+            </div>
 
-            <span className={`badge ${req.status}`}>
-              {req.status === "pending" && "⏳ Pending"}
-              {req.status === "accepted" && "✅ Accepted"}
-              {req.status === "rejected" && "❌ Rejected"}
-            </span>
+            <div className="request-actions">
+              {req.status === "pending" ? (
+                <>
+                  <button
+                    className="btn accept"
+                    disabled={updatingId === req._id}
+                    onClick={() => updateStatus(req._id, "accept")}
+                  >
+                    Accept
+                  </button>
 
-            {req.status === "pending" && (
-              <div className="actions">
-                <button
-                  className="accept"
-                  onClick={() => updateStatus(req._id, "accepted")}
-                >
-                  Accept
-                </button>
-                <button
-                  className="reject"
-                  onClick={() => updateStatus(req._id, "rejected")}
-                >
-                  Reject
-                </button>
-              </div>
-            )}
+                  <button
+                    className="btn reject"
+                    disabled={updatingId === req._id}
+                    onClick={() => updateStatus(req._id, "reject")}
+                  >
+                    Reject
+                  </button>
+                </>
+              ) : (
+                <span className={`badge ${req.status}`}>
+                  {req.status.toUpperCase()}
+                </span>
+              )}
+            </div>
           </div>
         ))
       )}
-    </>
+    </div>
   );
-};
+}
 
 export default ReceivedRequests;

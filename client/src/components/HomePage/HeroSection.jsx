@@ -23,7 +23,7 @@ const HeroSection = () => {
 
           <button
             className="btn-secondary"
-            onClick={() => navigate("/browse")}
+            onClick={() => navigate("/browse-skills")}
           >
             Browse Skills
           </button>

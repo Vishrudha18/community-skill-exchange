@@ -3,8 +3,8 @@ import MyRequests from "./MyRequests";
 import ReceivedRequests from "./ReceivedRequests";
 import "./Requests.css";
 
-const Requests = () => {
-  const [activeTab, setActiveTab] = useState("sent");
+function Requests() {
+  const [activeTab, setActiveTab] = useState("received");
 
   return (
     <div className="requests-page">
@@ -12,24 +12,24 @@ const Requests = () => {
 
       <div className="tabs">
         <button
-          className={activeTab === "sent" ? "tab active" : "tab"}
-          onClick={() => setActiveTab("sent")}
+          className={`tab ${activeTab === "my" ? "active" : ""}`}
+          onClick={() => setActiveTab("my")}
         >
           My Requests
         </button>
 
         <button
-          className={activeTab === "received" ? "tab active" : "tab"}
+          className={`tab ${activeTab === "received" ? "active" : ""}`}
           onClick={() => setActiveTab("received")}
         >
           Received Requests
         </button>
       </div>
 
-      {activeTab === "sent" && <MyRequests />}
+      {activeTab === "my" && <MyRequests />}
       {activeTab === "received" && <ReceivedRequests />}
     </div>
   );
-};
+}
 
 export default Requests;

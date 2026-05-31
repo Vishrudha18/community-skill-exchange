@@ -1,27 +1,63 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./Requests.css";
 
 function MyRequests() {
   const [requests, setRequests] = useState([]);
   const token = localStorage.getItem("token");
 
+  const fetchRequests = useCallback(async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/requests/sent", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Failed to fetch requests");
+        return;
+      }
+
+      setRequests(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [token]);
+
   useEffect(() => {
-    if (!token) return;
+    if (token) fetchRequests();
+  }, [token, fetchRequests]);
 
-    fetch("http://localhost:5000/api/requests/sent", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setRequests(data))
-      .catch((err) => console.error(err));
-  }, [token]); // ✅ token added → warning solved
+  const cancelRequest = async (id) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/requests/${id}/cancel`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-  const getStatusBadge = (status) => {
-    if (status === "pending") return "badge pending";
-    if (status === "accepted") return "badge accepted";
-    return "badge rejected";
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Failed to cancel request");
+        return;
+      }
+
+      setRequests((prev) =>
+        prev.map((req) =>
+          req._id === id ? { ...req, status: "cancelled" } : req
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      alert("Failed to cancel request");
+    }
   };
 
   return (
@@ -33,17 +69,29 @@ function MyRequests() {
       ) : (
         requests.map((req) => (
           <div className="request-card" key={req._id}>
-            <h3>{req.skill.name}</h3>
-            <p>Level: {req.skill.level}</p>
+            <h3>{req.skill?.name || "Unknown Skill"}</h3>
 
-            <span className={getStatusBadge(req.status)}>
+            <p>
+              Level: <b>{req.skill?.level || "N/A"}</b>
+            </p>
+
+            <span className={`badge ${req.status}`}>
               {req.status.toUpperCase()}
             </span>
 
             {req.status === "accepted" && (
               <p className="contact">
-                Provider Email: <b>{req.provider.email}</b>
+                Provider Email: <b>{req.provider?.email || "N/A"}</b>
               </p>
+            )}
+
+            {req.status === "pending" && (
+              <button
+                className="btn cancel"
+                onClick={() => cancelRequest(req._id)}
+              >
+                Cancel Request
+              </button>
             )}
           </div>
         ))

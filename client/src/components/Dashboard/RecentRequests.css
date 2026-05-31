@@ -1,0 +1,76 @@
+.timeline-container {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.timeline-container h2 {
+  font-size: 26px;
+  margin-bottom: 24px;
+  color: #38bdf8;
+}
+
+.timeline {
+  border-left: 2px solid #1e293b;
+  padding-left: 24px;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.timeline-item .dot {
+  position: absolute;
+  left: -31px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  background: #38bdf8;
+  border-radius: 50%;
+}
+
+.timeline-item .content {
+  background: linear-gradient(145deg, #020617, #0b1220);
+  padding: 18px 22px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.timeline-item h4 {
+  font-size: 18px;
+  color: #f8fafc;
+  margin-bottom: 6px;
+}
+
+.timeline-item .meta {
+  font-size: 14px;
+  color: #cbd5f5;
+  margin-bottom: 10px;
+}
+
+.status {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status.pending {
+  background: #facc15;
+  color: #422006;
+}
+
+.status.accepted {
+  background: #22c55e;
+  color: #022c22;
+}
+
+.status.rejected {
+  background: #ef4444;
+  color: white;
+}
+
+.empty {
+  color: #94a3b8;
+}

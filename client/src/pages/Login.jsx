@@ -23,6 +23,14 @@ function Login() {
       // ✅ Save token
       localStorage.setItem("token", res.data.token);
 
+      // ✅ Save user name (IMPORTANT 🔥)
+      localStorage.setItem("name", res.data.user.name);
+
+      // (optional but useful)
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      localStorage.setItem("userId", res.data.user._id);
+
       // ✅ Go to dashboard
       navigate("/dashboard");
 

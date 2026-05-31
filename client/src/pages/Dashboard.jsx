@@ -1,75 +1,55 @@
-import "./Dashboard.css";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import DashboardHero from "../components/Dashboard/DashboardHero";
+import ProfileOverview from "../components/Dashboard/ProfileOverview";
+import StatsCards from "../components/Dashboard/StatsCards";
+import RecentRequests from "../components/Dashboard/RecentRequests";
+import MySkills from "../components/Dashboard/MySkills";
 
-function Dashboard() {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+const Dashboard = () => {
+  const [profile, setProfile] = useState(null);
+  const [stats, setStats] = useState(null);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const fetchDashboardData = async () => {
+      const profileRes = await fetch("http://localhost:5000/api/auth/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const profileData = await profileRes.json();
 
-    if (!token) {
-      navigate("/login");
-      return;
-    }
+      const sentRes = await fetch("http://localhost:5000/api/requests/sent", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const sent = await sentRes.json();
 
-    axios
-      .get("http://localhost:5000/api/auth/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch(() => {
-        localStorage.removeItem("token");
-        navigate("/login");
-      })
-      .finally(() => setLoading(false));
-  }, [navigate]);
+      const receivedRes = await fetch("http://localhost:5000/api/requests/received", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const received = await receivedRes.json();
 
-  if (loading) {
-    return <h2 style={{ padding: "20px" }}>Loading...</h2>;
-  }
+      setProfile(profileData);
+      setStats({
+        offered: profileData.skillsOffered?.length || 0,
+        wanted: profileData.skillsWanted?.length || 0,
+        sent: sent.length,
+        received: received.filter(r => r.status === "pending").length,
+      });
+    };
+
+    fetchDashboardData();
+  }, [token]);
+
+  if (!profile || !stats) return null;
 
   return (
-  <div className="dashboard-container">
-    <h1 className="dashboard-title">Dashboard</h1>
-
-    <div className="card-grid">
-      <div className="card">
-        <h3>Welcome</h3>
-        <p><strong>Name:</strong> {user.name}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-      </div>
-
-      <div className="card">
-        <h3>Skills Offered</h3>
-        <ul className="skill-list">
-          {user.skillsOffered.map((skill, index) => (
-            <li key={index}>{skill}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="card">
-        <h3>Skills Wanted</h3>
-        <ul className="skill-list">
-          {user.skillsWanted.map((skill, index) => (
-            <li key={index}>{skill}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
-
-    <p className="status">✅ JWT protected dashboard</p>
-  </div>
-);
-
-}
+    <>
+      <DashboardHero name={profile.name} />
+      <StatsCards stats={stats} />
+      <RecentRequests />
+      <MySkills />
+      <ProfileOverview profile={profile} />
+    </>
+  );
+};
 
 export default Dashboard;

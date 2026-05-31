@@ -1,0 +1,64 @@
+.dashboard-hero {
+  padding: 80px 20px;
+  text-align: center;
+  background: radial-gradient(
+    circle at top,
+    #0f172a,
+    #020617 70%
+  );
+  color: #e5e7eb;
+}
+
+.dashboard-hero h1 {
+  font-size: 44px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: #f8fafc;
+}
+
+.dashboard-hero h1 span {
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dashboard-hero p {
+  font-size: 18px;
+  max-width: 700px;
+  margin: 0 auto 32px;
+  color: #cbd5f5;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-btn {
+  padding: 14px 30px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.hero-btn.primary {
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  color: #020617;
+}
+
+.hero-btn.primary:hover {
+  transform: translateY(-2px);
+}
+
+.hero-btn.secondary {
+  border: 1px solid #38bdf8;
+  color: #38bdf8;
+}
+
+.hero-btn.secondary:hover {
+  background: #38bdf8;
+  color: #020617;
+}

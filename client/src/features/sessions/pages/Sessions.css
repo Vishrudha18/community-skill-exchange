@@ -1,0 +1,163 @@
+.sessions-container {
+  min-height: 100vh;
+  background: #0f172a; /* dark navy */
+  padding: 80px 20px;
+  color: white;
+}
+
+.sessions-title {
+  font-size: 30px;
+  margin-bottom: 40px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* GRID */
+.sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 380px));
+  justify-content: center;
+  gap: 25px;
+}
+
+/* CARD */
+.session-card {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+
+  transition: all 0.3s ease;
+}
+
+.session-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* HEADER */
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.session-header h3 {
+  font-size: 20px;
+}
+
+/* STATUS */
+.status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.status.scheduled {
+  background: #facc15;
+  color: black;
+}
+
+.status.cancelled {
+  background: #ef4444;
+  color: white;
+}
+
+.status.completed {
+  background: #22c55e;
+  color: black;
+}
+
+/* TEXT */
+.session-user {
+  margin-top: 15px;
+  color: #cbd5f5;
+  font-size: 15px;
+}
+
+.session-time {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* BUTTON */
+.view-btn {
+  margin-top: 18px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-btn:hover {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  transform: scale(1.03);
+}
+
+/* center container */
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+}
+
+/* card */
+.empty-card {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 40px 60px;
+  border-radius: 16px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* icon */
+.empty-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+/* title */
+.empty-card h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #e2e8f0;
+}
+
+/* text */
+.empty-card p {
+  color: #94a3b8;
+  margin-bottom: 20px;
+}
+
+/* button */
+.browse-btn {
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  color: black;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.browse-btn:hover {
+  transform: scale(1.05);
+}
