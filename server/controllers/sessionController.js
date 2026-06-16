@@ -156,6 +156,40 @@ exports.cancelSession = async (req, res) => {
 };
 
 /* =======================
+   COMPLETE SESSION
+======================= */
+exports.completeSession = async (req, res) => {
+  try {
+    const session = await Session.findById(req.params.id);
+
+    if (!session) {
+      return res.status(404).json({ message: "Session not found" });
+    }
+
+    // Teacher or learner can complete
+    if (
+      session.teacher.toString() !== req.user.id &&
+      session.learner.toString() !== req.user.id
+    ) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    // Idempotent: already completed
+    if (session.status === "completed") {
+      return res.json(session);
+    }
+
+    session.status = "completed";
+
+    await session.save();
+
+    res.json(session);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to complete session" });
+  }
+};
+
+/* =======================
    GET BOOKED SLOTS
 ======================= */
 exports.getBookedSlots = async (req, res) => {
@@ -171,5 +205,51 @@ exports.getBookedSlots = async (req, res) => {
     res.json(sessions);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch booked slots" });
+  }
+};
+
+/* =======================
+   MARK SESSION LIVE
+======================= */
+exports.markSessionLive = async (req, res) => {
+  try {
+    const session = await Session.findById(req.params.id);
+
+    if (!session) {
+      return res.status(404).json({
+        message: "Session not found",
+      });
+    }
+
+    if (
+      session.teacher.toString() !== req.user.id &&
+      session.learner.toString() !== req.user.id
+    ) {
+      return res.status(403).json({
+        message: "Unauthorized",
+      });
+    }
+
+    if (session.status === "cancelled") {
+      return res.status(400).json({
+        message: "Cannot start a cancelled session",
+      });
+    }
+
+    if (session.status === "completed") {
+      return res.status(400).json({
+        message: "Session already completed",
+      });
+    }
+
+    session.status = "live";
+
+    await session.save();
+
+    res.json(session);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to mark session live",
+    });
   }
 };

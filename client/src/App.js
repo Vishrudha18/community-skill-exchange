@@ -18,6 +18,7 @@ import Sessions from "./features/sessions/pages/Sessions";
 import SessionDetails from "./features/sessions/pages/SessionDetails";
 import BookSession from "./pages/BookSession";
 import LiveSession from "./pages/LiveSession";
+import TestRating from "./pages/TestRating";
 
 function App() {
   return (
@@ -85,6 +86,8 @@ function App() {
         <Route path="/book/:teacherId" element={<BookSession />} />
 
         <Route path="/live/:id" element={<LiveSession />} />
+
+        <Route path="/test-rating" element={<TestRating />} />
       </Routes>
     </Router>
   );

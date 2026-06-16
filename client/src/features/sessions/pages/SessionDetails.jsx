@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./SessionDetails.css";
+import ReviewForm from "../../../components/reviews/ReviewForm";
 
 function SessionDetails() {
   const { id } = useParams();
@@ -10,9 +11,7 @@ function SessionDetails() {
   const [session, setSession] = useState(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [duration, setDuration] = useState("");
-  const [timeLeft, setTimeLeft] = useState("Loading...");
-  const [isLive, setIsLive] = useState(false);
+  const [reviewed, setReviewed] = useState(false);
 
   const userId = localStorage.getItem("userId");
   const isTeacher = session?.teacher?._id === userId;
@@ -32,42 +31,29 @@ function SessionDetails() {
     }
   }, [id]);
 
-  useEffect(() => {
-    fetchSession();
-  }, [fetchSession]);
+  const checkReviewStatus = useCallback(async () => {
+  try {
+    const token = localStorage.getItem("token");
 
-  // 🔥 TIMER
-  useEffect(() => {
-  if (!session?.scheduledAt) return;
+    const res = await axios.get(
+      `/api/reviews/check/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-  const interval = setInterval(() => {
-    const now = new Date();
-    const start = new Date(session.scheduledAt);
+    setReviewed(res.data.reviewed);
+  } catch (err) {
+    console.error(err);
+  }
+}, [id]);
 
-    const durationMinutes = session.duration || 60;
-    const end = new Date(start.getTime() + durationMinutes * 60000);
-
-    if (now < start) {
-      const diff = Math.floor((start - now) / 1000);
-      const mins = Math.floor(diff / 60);
-      const secs = diff % 60;
-
-      setTimeLeft(`Starts in ${mins}m ${secs}s`);
-      setIsLive(false);
-
-    } else if (now >= start && now <= end) {
-      setTimeLeft("Live Now");
-      setIsLive(true);
-
-    } else {
-      setTimeLeft("Session Ended");
-      setIsLive(false);
-    }
-  }, 1000);
-
-  return () => clearInterval(interval);
-
-}, [session]);
+useEffect(() => {
+  fetchSession();
+  checkReviewStatus();
+}, [fetchSession, checkReviewStatus]);
 
   // 🔥 Schedule
   const handleSchedule = async () => {
@@ -76,10 +62,14 @@ function SessionDetails() {
       const scheduledAt = new Date(`${date}T${time}`);
 
       await axios.put(
-        `/api/sessions/${id}/schedule`,
-        { scheduledAt, duration },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+  `/api/sessions/${id}/schedule`,
+  { scheduledAt },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       fetchSession();
     } catch (err) {
@@ -114,16 +104,21 @@ function SessionDetails() {
         <div className="session-header">
           <h2>{session.title}</h2>
 
-          <p className={`countdown ${isLive ? "live-text" : ""}`}>
-            {isLive ? "🔴 LIVE NOW" : `⏳ ${timeLeft}`}
-          </p>
+          <p className="countdown">
+  {session.status === "scheduled" && "📅 Scheduled"}
+  {session.status === "live" && "🔴 Live Now"}
+  {session.status === "completed" && "✅ Session Completed"}
+  {session.status === "cancelled" && "❌ Cancelled"}
+</p>
 
           <div className="status-box">
             <span className={`status ${session.status}`}>
               {session.status}
             </span>
 
-            {isLive && <span className="live-badge">🔴 LIVE</span>}
+            {session.status === "live" && (
+  <span className="live-badge">🔴 LIVE</span>
+)}
           </div>
         </div>
 
@@ -138,16 +133,20 @@ function SessionDetails() {
               : "Not scheduled"}
           </p>
 
-          {/* ✅ SHOW DURATION */}
-          {session.duration && (
-            <p>
-              <span>Duration</span> {session.duration} mins
-            </p>
-          )}
+          <p>
+  <span>Teacher:</span> {session.teacher?.name}
+</p>
+
+<p>
+  <span>Learner:</span> {session.learner?.name}
+</p>
+
         </div>
 
         {/* ✅ ONLY SHOW SCHEDULE IF NOT SCHEDULED */}
-        {!session.scheduledAt && isTeacher && session.type !== "booking" (
+        {!session.scheduledAt &&
+  isTeacher &&
+  session.type !== "booking" && (
           <div className="schedule-box">
             <h4>Schedule Session</h4>
 
@@ -162,13 +161,6 @@ function SessionDetails() {
                 type="time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-              />
-
-              <input
-                type="number"
-                placeholder="Duration (minutes)"
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
               />
             </div>
 
@@ -186,20 +178,47 @@ function SessionDetails() {
 
         {/* ACTIONS */}
         <div className="actions">
-          {session.status === "scheduled" && timeLeft !== "Session Ended" && (
-            <button
-              className="join-btn"
-              disabled={!isLive}
-              onClick={() => navigate(`/live/${session._id}`)}
-            >
-              {isLive ? "Join Now" : "Session Not Live"}
-            </button>
-          )}
+          {session.status !== "completed" &&
+ session.status !== "cancelled" && (
+  <button
+  className="join-btn"
+  disabled={session.status !== "live"}
+  onClick={() => navigate(`/live/${session._id}`)}
+>
+  {session.status === "live"
+    ? "Join Session"
+    : "Waiting for Teacher to Start"}
+</button>
+)}
+
+{isTeacher && session.status === "live" && (
+  <button className="end-btn">
+    End Session
+  </button>
+)}
 
           <button className="cancel-btn" onClick={handleCancel}>
             Cancel
           </button>
         </div>
+
+        {session.status === "completed" && (
+  <div className="review-section">
+    <h3>Session Review</h3>
+
+    {reviewed ? (
+      <p>✅ You have already reviewed this session.</p>
+    ) : (
+      <ReviewForm
+        sessionId={session._id}
+        onReviewSubmitted={() => {
+  checkReviewStatus();
+  fetchSession();
+}}
+      />
+    )}
+  </div>
+)}
 
       </div>
     </div>

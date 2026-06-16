@@ -14,20 +14,22 @@ module.exports = (io) => {
     });
 
     // OFFER
-    socket.on("offer", ({ offer, to }) => {
-      io.to(to).emit("offer", {
-        offer,
-        from: socket.id,
-      });
-    });
+    socket.on("offer", ({ offer, to, name }) => {
+  io.to(to).emit("offer", {
+    offer,
+    from: socket.id,
+    name,
+  });
+});
 
     // ANSWER
-    socket.on("answer", ({ answer, to }) => {
-      io.to(to).emit("answer", {
-        answer,
-        from: socket.id,
-      });
-    });
+    socket.on("answer", ({ answer, to, name }) => {
+  io.to(to).emit("answer", {
+    answer,
+    from: socket.id,
+    name,
+  });
+});
 
     // ICE
     socket.on("ice-candidate", ({ candidate, to }) => {

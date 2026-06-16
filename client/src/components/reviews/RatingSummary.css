@@ -1,0 +1,15 @@
+.rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rating-value {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.review-count {
+  color: #666;
+  font-size: 14px;
+}

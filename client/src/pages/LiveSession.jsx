@@ -53,8 +53,19 @@ function LiveSession() {
     });
 
     socket.current.on("receiveMessage", (data) => {
-      setMessages((prev) => [...prev, data]);
-    });
+  setMessages((prev) => {
+    const exists = prev.some(
+      (msg) =>
+        msg._id === data._id ||
+        (msg.message === data.message &&
+          msg.user === data.user)
+    );
+
+    if (exists) return prev;
+
+    return [...prev, data];
+  });
+});
 
     socket.current.on("userTyping", (user) => {
       if (user !== userName) setTypingUser(user);
@@ -69,6 +80,8 @@ function LiveSession() {
 
   // ================= VIDEO =================
   useEffect(() => {
+    if (!session?.scheduledAt) return;
+
     const startVideo = async () => {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -165,7 +178,7 @@ function LiveSession() {
     };
 
     startVideo();
-  }, [userName]);
+  }, [session, userName]);
 
   // ================= SCREEN SHARE =================
   const startScreenShare = async () => {
@@ -238,21 +251,20 @@ function LiveSession() {
 
   // ================= CHAT =================
   const sendMessage = () => {
-    if (!message.trim()) return;
+  if (!message.trim()) return;
 
-    const msgData = {
-      sessionId: id,
-      message,
-      user: userName || "User",
-    };
+  const msgData = {
+  sessionId: id,
+  message,
+  user: userName || "User",
+  userId: currentUser?._id,
+};
 
-    setMessages((prev) => [...prev, msgData]);
+  socket.current.emit("sendMessage", msgData);
+  socket.current.emit("stopTyping", id);
 
-    socket.current.emit("sendMessage", msgData);
-    socket.current.emit("stopTyping", id);
-
-    setMessage("");
-  };
+  setMessage("");
+};
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -267,9 +279,26 @@ function LiveSession() {
     setSession(res.data);
   }, [id]);
 
-  useEffect(() => {
-    fetchSession();
-  }, [fetchSession]);
+   const fetchMessages = useCallback(async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get(`/api/messages/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setMessages(res.data);
+  } catch (err) {
+    console.error("Failed to load messages", err);
+  }
+}, [id]);
+
+useEffect(() => {
+  fetchSession();
+  fetchMessages();
+}, [fetchSession, fetchMessages]);
 
   // ================= TIMER =================
   useEffect(() => {
@@ -289,6 +318,35 @@ function LiveSession() {
   }, [session]);
 
   if (!session) return <p>Loading...</p>;
+
+if (!session.scheduledAt) {
+  return (
+    <div className="live-error">
+      <h2>📅 Meeting Not Scheduled</h2>
+      <p>
+        The teacher has not scheduled this meeting yet.
+      </p>
+    </div>
+  );
+}
+
+if (session.status === "completed") {
+  return (
+    <div className="live-error">
+      <h2>✅ Session Completed</h2>
+      <p>This meeting has already ended.</p>
+    </div>
+  );
+}
+
+if (session.status === "cancelled") {
+  return (
+    <div className="live-error">
+      <h2>❌ Session Cancelled</h2>
+      <p>This meeting is no longer available.</p>
+    </div>
+  );
+}
 
   return (
     <div className="live-container">
@@ -355,7 +413,15 @@ function LiveSession() {
                 <div key={i} className={`chat-row ${isMe ? "me" : "other"}`}>
                   <div className="chat-bubble">
                     {!isMe && <span className="sender">{msg.user}</span>}
-                    <p>{msg.message}</p>
+                    <p>{msg.message || msg.content}</p>
+
+<small className="message-time">
+  {msg.time
+    ? new Date(msg.time).toLocaleTimeString()
+    : msg.createdAt
+    ? new Date(msg.createdAt).toLocaleTimeString()
+    : ""}
+</small>
                   </div>
                 </div>
               );

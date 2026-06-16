@@ -132,16 +132,26 @@ exports.acceptRequest = async (req, res) => {
     });
 
     if (!session) {
-      session = await Session.create({
-        teacher: request.provider,
-        learner: request.requester,
-        skill: request.skill,
-        request: request._id,
-        title: "Skill Learning Session",
-        meetingType: "video",
-        status: "scheduled",
-      });
-    }
+  console.log("Creating new session...");
+
+  session = await Session.create({
+    teacher: request.provider,
+    learner: request.requester,
+    skill: request.skill,
+    request: request._id,
+
+    title: "Skill Learning Session",
+    meetingType: "video",
+    status: "scheduled",
+
+    startedAt: null,
+    endedAt: null,
+    teacherJoined: false,
+    learnerJoined: false,
+  });
+
+  console.log("Session created successfully:", session);
+}
 
     await Notification.create({
       user: request.requester,

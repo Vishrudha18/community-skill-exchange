@@ -73,10 +73,16 @@ function Sessions() {
             </p>
 
             <p className="session-time">
-              {session.scheduledAt
-                ? new Date(session.scheduledAt).toLocaleString()
-                : "Not scheduled"}
-            </p>
+  {session.status === "completed"
+    ? "✅ Session Completed"
+    : session.status === "live"
+    ? "🔴 Meeting in Progress"
+    : session.scheduledAt
+    ? `📅 ${new Date(session.scheduledAt).toLocaleString()}`
+    : session.teacher?._id === user?._id
+    ? "📝 Action Required: Schedule Meeting"
+    : "⏳ Waiting for Teacher to Schedule"}
+</p>
 
             <button
               className="view-btn"

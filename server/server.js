@@ -27,6 +27,8 @@ app.use("/api/sessions", require("./routes/sessionRoutes"));
 app.use("/api/documents", require("./routes/documentRoutes"));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/availability", require("./routes/availabilityRoutes"));
+app.use("/api/messages", require("./routes/messageRoutes"));
+app.use("/api/reviews", require("./routes/reviewRoutes"));
 
 app.get("/test", (req, res) => {
   res.json({ message: "Server working" });
