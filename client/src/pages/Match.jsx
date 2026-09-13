@@ -1,4 +1,12 @@
 import { useEffect, useState } from "react";
+import {
+  FiArrowRight,
+  FiCheck,
+  FiCheckCircle,
+  FiMail,
+  FiSearch,
+  FiZap,
+} from "react-icons/fi";
 import "./Match.css";
 
 const Match = () => {
@@ -7,6 +15,10 @@ const Match = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [requestingId, setRequestingId] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [requestError, setRequestError] = useState("");
+
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -14,7 +26,6 @@ const Match = () => {
 
     const fetchData = async () => {
       try {
-        // Fetch matches
         const matchRes = await fetch("http://localhost:5000/api/match", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -22,21 +33,19 @@ const Match = () => {
         });
 
         const matchData = await matchRes.json();
+
         if (!matchRes.ok) {
           throw new Error(matchData.message || "Failed to fetch matches");
         }
 
-        // Fetch sent requests (for duplicate prevention)
-        const sentRes = await fetch(
-          "http://localhost:5000/api/requests/sent",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const sentRes = await fetch("http://localhost:5000/api/requests/sent", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const sentData = await sentRes.json();
+
         if (!sentRes.ok) {
           throw new Error("Failed to fetch sent requests");
         }
@@ -51,54 +60,88 @@ const Match = () => {
     };
 
     fetchData();
-  }, [token]); // ✅ token added → warning solved
+  }, [token]);
 
-  // Check if request already sent
   const isAlreadyRequested = (skillId) =>
-    sentRequests.some((req) => req.skill._id === skillId);
+    sentRequests.some((req) => req.skill?._id === skillId);
 
-  // Send request
   const requestSkill = async (providerId, skillId) => {
+    if (requestingId) return;
+
     try {
+      setRequestingId(skillId);
+      setRequestError("");
+      setSuccessMessage("");
+
       const res = await fetch("http://localhost:5000/api/requests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ providerId, skillId }),
+        body: JSON.stringify({
+          providerId,
+          skillId,
+        }),
       });
 
       const data = await res.json();
+
       if (!res.ok) {
         throw new Error(data.message || "Request failed");
       }
 
-      // Update UI instantly
       setSentRequests((prev) => [...prev, data]);
+
+      setSuccessMessage("Skill request sent successfully.");
+
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 4000);
     } catch (err) {
-      alert(err.message);
+      setRequestError(err.message);
+    } finally {
+      setRequestingId(null);
     }
   };
 
   const getInitial = (name) => {
-  if (!name) return "?";
-  return name.trim().charAt(0).toUpperCase();
-};
+    if (!name) return "?";
+
+    return name.trim().charAt(0).toUpperCase();
+  };
 
   const renderSkeleton = () => (
     <div className="match-page">
       <section className="match-hero">
-        <h1>Find Your Perfect Skill Match</h1>
-        <p>Discover community members who can help you learn the skills you're looking for.</p>
+        <div className="hero-eyebrow">
+          <FiZap />
+          <span>Smart Skill Matching</span>
+        </div>
+
+        <h1>
+          Find people who can
+          <span> help you grow.</span>
+        </h1>
+
+        <p>
+          Discover community members who can help you learn the skills you're
+          looking for.
+        </p>
       </section>
 
       <div className="match-grid">
         {Array.from({ length: 4 }).map((_, i) => (
           <div className="match-card skeleton-card" key={i}>
-            <div className="skeleton skeleton-icon" />
-            <div className="skeleton skeleton-line skeleton-line--title" />
-            <div className="skeleton skeleton-line skeleton-line--sub" />
+            <div className="skeleton-card-top">
+              <div className="skeleton skeleton-icon" />
+
+              <div className="skeleton-heading">
+                <div className="skeleton skeleton-line skeleton-line--title" />
+                <div className="skeleton skeleton-line skeleton-line--sub" />
+              </div>
+            </div>
+
             <div className="skeleton skeleton-row" />
             <div className="skeleton skeleton-btn" />
           </div>
@@ -115,6 +158,12 @@ const Match = () => {
     return (
       <div className="match-page">
         <div className="match-status-card error">
+          <div className="status-card-icon">
+            <FiSearch />
+          </div>
+
+          <h2>Unable to find matches</h2>
+
           <p>{error}</p>
         </div>
       </div>
@@ -124,61 +173,165 @@ const Match = () => {
   return (
     <div className="match-page">
       <section className="match-hero">
-        <h1>Find Your Perfect Skill Match</h1>
-        <p>Discover community members who can help you learn the skills you're looking for.</p>
-      </section>
+        <div className="hero-eyebrow">
+          <FiZap />
+          <span>Smart Skill Matching</span>
+        </div>
 
+        <h1>
+          Find people who can
+          <span> help you grow.</span>
+        </h1>
+
+        <p>
+          Discover community members who can help you learn the skills you're
+          looking for.
+        </p>
+
+        {matches.length > 0 && (
+          <div className="match-summary">
+            <div className="summary-icon">
+              <FiSearch />
+            </div>
+
+            <div>
+              <strong>{matches.length}</strong>
+
+              <span>
+                {matches.length === 1
+                  ? " skill match found"
+                  : " skill matches found"}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="request-success">
+            <FiCheckCircle />
+            <span>{successMessage}</span>
+          </div>
+        )}
+
+        {requestError && (
+          <div className="request-error">
+            <span>{requestError}</span>
+            <button type="button" onClick={() => setRequestError("")}>
+              Dismiss
+            </button>
+          </div>
+        )}
+      </section>
 
       {matches.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
-              <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-            </svg>
+            <FiSearch />
           </div>
-          <h2>No Skill Matches Found</h2>
-          <p>Try browsing more skills or update your profile to discover new matches.</p>
-          <button
-            type="button"
-            className="browse-skills-btn"
-            onClick={() => (window.location.href = "/skills")}
-          >
-            Browse Skills
-          </button>
+
+          <div className="empty-state-content">
+            <span className="empty-state-label">No matches yet</span>
+
+            <h2>No Skill Matches Found</h2>
+
+            <p>
+              Try browsing more skills or update your profile to discover new
+              matches.
+            </p>
+
+            <button
+              type="button"
+              className="browse-skills-btn"
+              onClick={() => (window.location.href = "/skills")}
+            >
+              <span>Browse Skills</span>
+              <FiArrowRight />
+            </button>
+          </div>
         </div>
       ) : (
         <div className="match-grid">
-          {matches.map((match) => (
-            <div className="match-card" key={match._id}>
-              <div className="card-header">
-                <div className="skill-icon">{getInitial(match.name)}</div>
-                <div className="card-heading">
-                  <h3>{match.name}</h3>
-                  <p className="with-teacher">With: {match.user.name}</p>
+          {matches.map((match) => {
+            const requested = isAlreadyRequested(match._id);
+            const requesting = requestingId === match._id;
+
+            return (
+              <article className="match-card" key={match._id}>
+                <div className="card-header">
+                  <div className="skill-icon">{getInitial(match.name)}</div>
+
+                  <div className="card-heading">
+                    <div className="skill-label">Skill match</div>
+
+                    <h3>{match.name}</h3>
+
+                    <div className="teacher-preview">
+                      <div className="teacher-avatar">
+                        {getInitial(match.user?.name)}
+                      </div>
+
+                      <div className="teacher-details">
+                        <span className="teacher-caption">Can teach you</span>
+
+                        <span className="teacher-name">
+                          {match.user?.name || "Community member"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className="status-badge">
+                    <span className="status-dot" />
+                    Available
+                  </span>
                 </div>
-                <span className="status-badge">
-                  <span className="status-dot" />
-                  Available
-                </span>
-              </div>
 
-              <div className="info-row">
-                <span className="info-left">
-                  Level: <strong>{match.level}</strong>
-                </span>
-                <span className="info-right email">{match.user.email}</span>
-              </div>
+                <div className="match-divider" />
 
-              <button
-                className="request-btn"
-                disabled={isAlreadyRequested(match._id)}
-                onClick={() => requestSkill(match.user._id, match._id)}
-              >
-                {isAlreadyRequested(match._id) ? "Requested" : "Request Skill"}
-              </button>
-            </div>
-          ))}
+                <div className="info-row">
+                  <div className="info-item">
+                    <span className="info-label">Skill level</span>
+
+                    <strong>{match.level}</strong>
+                  </div>
+
+                  <div className="info-item info-item--email">
+                    <span className="info-label">Contact</span>
+
+                    <span className="email">
+                      <FiMail />
+                      {match.user?.email}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  className={`request-btn ${requested ? "requested" : ""} ${
+                    requesting ? "requesting" : ""
+                  }`}
+                  disabled={requested || requesting}
+                  onClick={() => requestSkill(match.user._id, match._id)}
+                >
+                  {requesting ? (
+                    <>
+                      <span className="request-spinner" />
+                      <span>Sending Request...</span>
+                    </>
+                  ) : requested ? (
+                    <>
+                      <FiCheck />
+                      <span>Request Sent</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Request Skill</span>
+                      <FiArrowRight />
+                    </>
+                  )}
+                </button>
+              </article>
+            );
+          })}
         </div>
       )}
     </div>
