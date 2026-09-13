@@ -2,14 +2,22 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-top: 12px;
 }
 
 .rating-value {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 700;
+  font-size: 18px;
+  color: #f8fafc;
 }
 
 .review-count {
-  color: #666;
+  color: #94a3b8;
   font-size: 14px;
+}
+
+.no-reviews {
+  font-size: 14px;
+  color: #94a3b8;
+  font-style: italic;
 }

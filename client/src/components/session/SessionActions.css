@@ -1,0 +1,154 @@
+/* =========================================================
+   SessionActions — premium glassmorphism actions card
+   ========================================================= */
+
+.actions-card {
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 20px;
+
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.actions-card:hover {
+  border-color: rgba(148, 163, 184, 0.25);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+}
+
+.actions-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.actions-icon-box {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: white;
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+  box-shadow: 0 6px 18px rgba(250, 204, 21, 0.3);
+}
+
+.actions-card-header h4 {
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* ================= BUTTON GRID ================= */
+
+.actions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.action-btn {
+  flex: 1;
+  min-width: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+    background 0.25s ease, border-color 0.25s ease;
+}
+
+.action-btn svg {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+/* Start Meeting — filled gradient */
+.start-btn {
+  border: none;
+  color: white;
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  box-shadow: 0 10px 26px rgba(56, 189, 248, 0.3);
+}
+
+.start-btn:hover {
+  box-shadow: 0 14px 32px rgba(99, 102, 241, 0.4);
+}
+
+/* Join Session — outline blue */
+.join-btn {
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #7dd3fc;
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.join-btn:hover:not(:disabled) {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: rgba(56, 189, 248, 0.6);
+}
+
+.join-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* End Session — filled orange */
+.end-btn {
+  border: none;
+  color: white;
+  background: linear-gradient(90deg, #f97316, #ea580c);
+  box-shadow: 0 10px 26px rgba(249, 115, 22, 0.3);
+}
+
+.end-btn:hover {
+  box-shadow: 0 14px 32px rgba(234, 88, 12, 0.4);
+}
+
+/* Cancel Session — outline red */
+.cancel-btn {
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.cancel-btn:hover {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 640px) {
+  .actions-grid {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    min-width: 0;
+  }
+}

@@ -1,0 +1,225 @@
+/* =========================================================
+   SessionParticipants — premium glassmorphism participants card
+   ========================================================= */
+
+.participants-card {
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 25px;
+}
+
+.participants-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.participants-icon-box {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: white;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.3);
+}
+
+.participants-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.participants-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ================= ROW ================= */
+
+.participant-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 14px;
+  padding: 14px 16px;
+
+  transition: transform 0.25s ease, border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.participant-row:hover {
+  transform: translateY(-2px);
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.participant-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* ================= AVATAR ================= */
+
+.participant-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.participant-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: white;
+  object-fit: cover;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+}
+
+.participant-online-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid #1e293b;
+}
+
+/* ================= DETAILS ================= */
+
+.participant-details {
+  min-width: 0;
+}
+
+.participant-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.participant-name-row h4 {
+  margin: 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.participant-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.participant-badge.teacher {
+  background: rgba(168, 85, 247, 0.18);
+  color: #d8b4fe;
+}
+
+.participant-badge.learner {
+  background: rgba(34, 197, 94, 0.18);
+  color: #86efac;
+}
+
+.participant-badge.you {
+  background: rgba(56, 189, 248, 0.18);
+  color: #7dd3fc;
+}
+
+.participant-title {
+  margin: 2px 0 0;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.participant-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.participant-star {
+  color: #facc15;
+}
+
+.participant-review-count {
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* ================= ACTIONS ================= */
+
+.participant-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.participant-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.participant-icon-btn:hover {
+  background: rgba(56, 189, 248, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 480px) {
+  .participant-row {
+    justify-content: flex-start;
+  }
+
+  .participant-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

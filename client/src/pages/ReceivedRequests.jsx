@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import "./Requests.css";
+import RequestCard from "../components/requests/RequestCard";
 
-function ReceivedRequests() {
+function ReceivedRequests({ onCountChange }) {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
@@ -40,6 +41,10 @@ function ReceivedRequests() {
     if (token) fetchRequests();
   }, [token, fetchRequests]);
 
+  useEffect(() => {
+    if (onCountChange) onCountChange(requests.length);
+  }, [requests, onCountChange]);
+
   const updateStatus = async (id, action) => {
     try {
       setUpdatingId(id);
@@ -64,7 +69,10 @@ function ReceivedRequests() {
       setRequests((prev) =>
         prev.map((req) =>
           req._id === id
-            ? { ...req, status: action === "accept" ? "accepted" : "rejected" }
+            ? {
+                ...req,
+                status: action === "accept" ? "accepted" : "rejected",
+              }
             : req
         )
       );
@@ -77,7 +85,7 @@ function ReceivedRequests() {
   };
 
   return (
-    <div className="requests-page">
+    <>
       <h2>Received Requests</h2>
 
       {loading ? (
@@ -86,43 +94,17 @@ function ReceivedRequests() {
         <p>No requests received</p>
       ) : (
         requests.map((req) => (
-          <div className="request-card" key={req._id}>
-            <div className="request-info">
-              <h3>{req.skill?.name || "Unknown Skill"}</h3>
-              <p>Level: {req.skill?.level || "N/A"}</p>
-              <p>From: {req.requester?.name || "Unknown"}</p>
-              <p>Email: {req.requester?.email || "N/A"}</p>
-            </div>
-
-            <div className="request-actions">
-              {req.status === "pending" ? (
-                <>
-                  <button
-                    className="btn accept"
-                    disabled={updatingId === req._id}
-                    onClick={() => updateStatus(req._id, "accept")}
-                  >
-                    Accept
-                  </button>
-
-                  <button
-                    className="btn reject"
-                    disabled={updatingId === req._id}
-                    onClick={() => updateStatus(req._id, "reject")}
-                  >
-                    Reject
-                  </button>
-                </>
-              ) : (
-                <span className={`badge ${req.status}`}>
-                  {req.status.toUpperCase()}
-                </span>
-              )}
-            </div>
-          </div>
+          <RequestCard
+            key={req._id}
+            request={req}
+            type="received"
+            updating={updatingId === req._id}
+            onAccept={() => updateStatus(req._id, "accept")}
+            onReject={() => updateStatus(req._id, "reject")}
+          />
         ))
       )}
-    </div>
+    </>
   );
 }
 

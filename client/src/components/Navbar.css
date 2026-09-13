@@ -129,13 +129,6 @@
 
 /* BUTTONS */
 .btn-login {
-  border: 1px solid #38bdf8;
-  padding: 6px 12px;
-  border-radius: 20px;
-  color: #38bdf8;
-}
-
-.btn-register {
   background: #38bdf8;
   padding: 6px 12px;
   border-radius: 20px;

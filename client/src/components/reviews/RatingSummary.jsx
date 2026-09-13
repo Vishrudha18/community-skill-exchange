@@ -2,6 +2,16 @@ import StarRating from "./StarRating";
 import "./RatingSummary.css";
 
 const RatingSummary = ({ averageRating = 0, reviewCount = 0 }) => {
+  if (reviewCount === 0) {
+    return (
+      <div className="rating-summary">
+        <span className="no-reviews">
+          No reviews yet
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className="rating-summary">
       <StarRating

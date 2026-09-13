@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios";
+import { FiMessageSquare, FiSend, FiLoader } from "react-icons/fi";
 import StarRating from "./StarRating";
 import "./ReviewForm.css";
 
@@ -20,25 +22,19 @@ const ReviewForm = ({ sessionId, onReviewSubmitted }) => {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/api/reviews", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
+      await axios.post(
+        "http://localhost:5000/api/reviews",
+        {
           sessionId,
           rating,
           comment,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.message || "Failed to submit review");
-        return;
-      }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       alert("Review submitted successfully!");
 
@@ -50,31 +46,61 @@ const ReviewForm = ({ sessionId, onReviewSubmitted }) => {
       }
     } catch (err) {
       console.error(err);
-      alert("Something went wrong.");
+
+      alert(err.response?.data?.message || "Failed to submit review");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form className="review-form" onSubmit={handleSubmit}>
-      <h3>Leave a Review</h3>
+    <form className="review-form-card" onSubmit={handleSubmit}>
+      <div className="review-form-glow" aria-hidden="true" />
 
-      <StarRating
-        rating={rating}
-        setRating={setRating}
-        interactive={true}
-      />
+      <div className="review-form-header">
+        <span className="review-form-icon-box">
+          <FiMessageSquare />
+        </span>
+        <div>
+          <h3>Leave a Review</h3>
+          <p className="review-form-subtitle">
+            Share your experience with this session
+          </p>
+        </div>
+      </div>
 
-      <textarea
-        placeholder="Write your feedback..."
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        rows={4}
-      />
+      <div className="review-form-field">
+        <span className="review-form-label">Your Rating</span>
+        <StarRating rating={rating} setRating={setRating} interactive={true} />
+      </div>
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Submitting..." : "Submit Review"}
+      <div className="review-form-field">
+        <span className="review-form-label">Your Feedback</span>
+        <textarea
+          className="review-form-textarea"
+          placeholder="Write your feedback..."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          rows={4}
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="review-form-submit-btn"
+        disabled={loading}
+      >
+        {loading ? (
+          <>
+            <FiLoader className="review-form-spin" />
+            Submitting...
+          </>
+        ) : (
+          <>
+            <FiSend />
+            Submit Review
+          </>
+        )}
       </button>
     </form>
   );

@@ -1,5 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import "./ProfileOverview.css";
+import RatingSummary from "../reviews/RatingSummary";
+import ReviewList from "../reviews/ReviewList";
 
 const ProfileOverview = () => {
   const [profile, setProfile] = useState(null);
@@ -86,6 +88,11 @@ const ProfileOverview = () => {
         <p><strong>Role:</strong> {profile?.role || "Member"}</p>
       </div>
 
+      <RatingSummary
+    averageRating={profile?.averageRating || 0}
+    reviewCount={profile?.reviewCount || 0}
+  />
+
       <div className="skills-section">
         <div>
           <h4>Skills Offered</h4>
@@ -115,6 +122,11 @@ const ProfileOverview = () => {
           )}
         </div>
       </div>
+      <div className="reviews-section">
+  <h3>Recent Reviews</h3>
+
+  <ReviewList userId={profile?._id} />
+</div>
     </section>
   );
 };

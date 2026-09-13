@@ -1,0 +1,9 @@
+/* ========================================================= 
+SessionStatus — premium glassmorphism status summary card 
+========================================================= */ 
+.status-card { 
+  background: rgba(30, 41, 59, 0.5); 
+  backdrop-filter: blur(16px); 
+  -webkit-backdrop-filter: blur(16px); 
+  border: 1px solid rgba(148, 163, 184, 0.15); 
+  border-radius: 18px; padding: 20px; transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; } .status-card:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, 0.25); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); } .status-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; } .status-card-icon-box { flex-shrink: 0; width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: white; background: linear-gradient(135deg, #38bdf8, #6366f1); box-shadow: 0 6px 16px rgba(56, 189, 248, 0.3); } .status-card-header h4 { margin: 0; color: #fff; font-size: 15px; font-weight: 700; } .status-pill { display: inline-block; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; margin-bottom: 14px; background: rgba(56, 189, 248, 0.15); color: #7dd3fc; } .status-pill.live { background: rgba(239, 68, 68, 0.15); color: #fca5a5; } .status-pill.completed { background: rgba(34, 197, 94, 0.15); color: #86efac; } .status-pill.cancelled { background: rgba(100, 116, 139, 0.15); color: #cbd5e1; } .status-pill.missed { background: rgba(249, 115, 22, 0.15); color: #fdba74; } .status-card-text { margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.6; }

@@ -6,9 +6,12 @@ const Skill = require("../models/Skill");
 exports.getAllSkills = async (req, res) => {
   try {
     const skills = await Skill.find({
-      user: { $ne: req.user.id }, // exclude self
-      type: "offer",
-    }).populate("user", "name email");
+  user: { $ne: req.user.id }, // exclude self
+  type: "offer",
+}).populate(
+  "user",
+  "name email averageRating reviewCount"
+);
 
     res.json(skills);
   } catch (error) {

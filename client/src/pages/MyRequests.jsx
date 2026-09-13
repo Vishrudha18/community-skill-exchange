@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import "./Requests.css";
+import RequestCard from "../components/requests/RequestCard";
 
-function MyRequests() {
+function MyRequests({ onCountChange }) {
   const [requests, setRequests] = useState([]);
   const token = localStorage.getItem("token");
 
@@ -29,6 +30,10 @@ function MyRequests() {
   useEffect(() => {
     if (token) fetchRequests();
   }, [token, fetchRequests]);
+
+  useEffect(() => {
+    if (onCountChange) onCountChange(requests.length);
+  }, [requests, onCountChange]);
 
   const cancelRequest = async (id) => {
     try {
@@ -61,43 +66,23 @@ function MyRequests() {
   };
 
   return (
-    <div className="requests-page">
-      <h2>My Skill Requests</h2>
+  <>
+    <h2>My Skill Requests</h2>
 
-      {requests.length === 0 ? (
-        <p>No requests yet</p>
-      ) : (
-        requests.map((req) => (
-          <div className="request-card" key={req._id}>
-            <h3>{req.skill?.name || "Unknown Skill"}</h3>
-
-            <p>
-              Level: <b>{req.skill?.level || "N/A"}</b>
-            </p>
-
-            <span className={`badge ${req.status}`}>
-              {req.status.toUpperCase()}
-            </span>
-
-            {req.status === "accepted" && (
-              <p className="contact">
-                Provider Email: <b>{req.provider?.email || "N/A"}</b>
-              </p>
-            )}
-
-            {req.status === "pending" && (
-              <button
-                className="btn cancel"
-                onClick={() => cancelRequest(req._id)}
-              >
-                Cancel Request
-              </button>
-            )}
-          </div>
-        ))
-      )}
-    </div>
-  );
+    {requests.length === 0 ? (
+      <p>No requests yet</p>
+    ) : (
+      requests.map((req) => (
+        <RequestCard
+          key={req._id}
+          request={req}
+          type="sent"
+          onCancel={() => cancelRequest(req._id)}
+        />
+      ))
+    )}
+  </>
+);
 }
 
-export default MyRequests;
+export default MyRequests; 

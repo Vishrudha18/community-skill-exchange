@@ -1,0 +1,88 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+
+  padding: 48px 32px;
+
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  border: 1.5px dashed rgba(255, 255, 255, 0.14);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.empty-state:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.empty-state:hover .empty-state-icon {
+  box-shadow: 0 12px 36px rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 20px;
+
+  background: linear-gradient(135deg, #38bdf8, #6366f1, #c084fc);
+
+  color: white;
+  font-size: 26px;
+
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.35);
+
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.empty-state-copy h3 {
+  margin: 0 0 6px;
+  color: white;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.empty-state-copy p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 540px) {
+  .empty-state {
+    padding: 36px 20px;
+    border-radius: 18px;
+  }
+
+  .empty-state-icon {
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+    border-radius: 16px;
+  }
+
+  .empty-state-copy h3 {
+    font-size: 17px;
+  }
+}

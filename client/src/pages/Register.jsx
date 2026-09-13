@@ -70,59 +70,87 @@ function Register() {
 
 
   return (
-    <div className="register-container">
-      <form className="register-form" onSubmit={handleSubmit}>
-        <h2>Create Account</h2>
+    <div className="register-page">
+  <div className="register-left">
+    <h1 className="brand-title">SkillExchange</h1>
 
-        {error && <p className="error-text">{error}</p>}
-
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          type="text"
-          name="skillsOffered"
-          placeholder="Skills You Offer (comma separated)"
-          onChange={handleChange}
-        />
-
-        <input
-          type="text"
-          name="skillsWanted"
-          placeholder="Skills You Want (comma separated)"
-          onChange={handleChange}
-        />
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
-        </button>
-
-        <p className="login-text">
-          Already have an account? <a href="/login">Login</a>
-        </p>
-      </form>
+    <div className="hero-word">
+      <span>Share.</span>
+      <span>Learn.</span>
+      <span>Connect.</span>
     </div>
+
+    <p className="hero-text">
+      Join a community where people teach skills,
+      learn from others, and grow together.
+    </p>
+  </div>
+
+  <div className="register-right">
+    <form className="register-form" onSubmit={handleSubmit}>
+      <h2>Create Account 🚀</h2>
+
+      <p className="register-subtitle">
+        Start your learning journey today
+      </p>
+
+      {error && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
+
+      <input
+        type="text"
+        name="name"
+        placeholder="Full Name"
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Email Address"
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="text"
+        name="skillsOffered"
+        placeholder="Skills You Offer"
+        onChange={handleChange}
+      />
+
+      <input
+        type="text"
+        name="skillsWanted"
+        placeholder="Skills You Want To Learn"
+        onChange={handleChange}
+      />
+
+      <button type="submit" disabled={loading}>
+        {loading ? "Creating Account..." : "Create Account"}
+      </button>
+
+      <div className="register-footer">
+        Already have an account?
+        <span onClick={() => navigate("/login")}>
+          Login
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
   );
 }
 

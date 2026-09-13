@@ -24,13 +24,23 @@ useEffect(() => {
     }
 
     try {
-      await axios.post("/api/sessions/book", {
-        teacherId,
-        day,
-        slotStart: slot.startTime,
-        slotEnd: slot.endTime,
-        date: selectedDate,
-      });
+      const token = localStorage.getItem("token");
+
+      await axios.post(
+        "/api/sessions/book",
+        {
+          teacherId,
+          day,
+          slotStart: slot.startTime,
+          slotEnd: slot.endTime,
+          date: selectedDate,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       alert("Session booked successfully!");
     } catch (err) {

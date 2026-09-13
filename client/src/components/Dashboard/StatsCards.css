@@ -1,4 +1,4 @@
-.stats-grid {
+.dash-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
@@ -6,7 +6,7 @@
   max-width: 1100px;
 }
 
-.stat-card {
+.dash-stat-card {
   padding: 28px;
   border-radius: 18px;
   background: linear-gradient(145deg, #020617, #0b1220);
@@ -15,24 +15,24 @@
   transition: transform 0.3s ease;
 }
 
-.stat-card:hover {
+.dash-stat-card:hover {
   transform: translateY(-6px);
 }
 
-.stat-card h3 {
+.dash-stat-card h3 {
   font-size: 40px;
   font-weight: 800;
   margin-bottom: 8px;
 }
 
-.stat-card p {
+.dash-stat-card p {
   color: #cbd5f5;
   font-size: 15px;
   letter-spacing: 0.04em;
 }
 
 /* Color accents */
-.stat-card.blue h3 { color: #38bdf8; }
-.stat-card.purple h3 { color: #a78bfa; }
-.stat-card.green h3 { color: #22c55e; }
-.stat-card.orange h3 { color: #f97316; }
+.dash-stat-card.blue h3 { color: #38bdf8; }
+.dash-stat-card.purple h3 { color: #a78bfa; }
+.dash-stat-card.green h3 { color: #22c55e; }
+.dash-stat-card.orange h3 { color: #f97316; }

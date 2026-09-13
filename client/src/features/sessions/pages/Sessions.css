@@ -1,163 +1,1061 @@
+/* =========================================
+   MY SESSIONS PAGE
+   ========================================= */
+
 .sessions-container {
   min-height: 100vh;
-  background: #0f172a; /* dark navy */
-  padding: 80px 20px;
-  color: white;
+  padding: 40px 24px 70px;
+  color: #f8fafc;
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(37, 99, 235, 0.13),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 35%,
+      rgba(124, 58, 237, 0.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #030817 0%,
+      #061027 45%,
+      #030817 100%
+    );
 }
 
-.sessions-title {
-  font-size: 30px;
-  margin-bottom: 40px;
-  text-align: center;
-  font-weight: 600;
-}
 
-/* GRID */
-.sessions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 380px));
-  justify-content: center;
-  gap: 25px;
-}
+/* =========================================
+   MAIN WRAPPER
+   ========================================= */
 
-/* CARD */
-.session-card {
-  background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(10px);
-  color: white;
-  padding: 22px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-
-  transition: all 0.3s ease;
-}
-
-.session-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-}
-
-/* HEADER */
-.session-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.session-header h3 {
-  font-size: 20px;
-}
-
-/* STATUS */
-.status {
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-}
-
-.status.scheduled {
-  background: #facc15;
-  color: black;
-}
-
-.status.cancelled {
-  background: #ef4444;
-  color: white;
-}
-
-.status.completed {
-  background: #22c55e;
-  color: black;
-}
-
-/* TEXT */
-.session-user {
-  margin-top: 15px;
-  color: #cbd5f5;
-  font-size: 15px;
-}
-
-.session-time {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #94a3b8;
-}
-
-/* BUTTON */
-.view-btn {
-  margin-top: 18px;
+.sessions-wrapper {
   width: 100%;
-  padding: 10px;
-  border: none;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+
+/* =========================================
+   PAGE HEADER
+   ========================================= */
+
+.sessions-page-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.sessions-page-header h1 {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  color: #f8fafc;
+}
+
+.sessions-page-header p {
+  margin: 10px auto 0;
+  max-width: 620px;
+  color: #9aa9c5;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   STATS
+   ========================================= */
+
+.session-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  min-height: 92px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16, 31, 61, 0.72),
+      rgba(7, 18, 40, 0.72)
+    );
+
+  border: 1px solid rgba(90, 122, 177, 0.25);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  backdrop-filter: blur(16px);
+  transition: all 0.25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(99, 102, 241, 0.38);
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.3),
+    0 0 25px rgba(59, 130, 246, 0.06);
+}
+
+
+/* =========================================
+   STAT ICONS
+   ========================================= */
+
+.stat-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.total-icon {
+  color: #38bdf8;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(14, 116, 255, 0.35),
+      rgba(37, 99, 235, 0.12)
+    );
+
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.completed-icon {
+  color: #4ade80;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(34, 197, 94, 0.32),
+      rgba(22, 163, 74, 0.1)
+    );
+
+  border: 1px solid rgba(74, 222, 128, 0.22);
+}
+
+.progress-icon {
+  color: #c084fc;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124, 58, 237, 0.35),
+      rgba(91, 33, 182, 0.1)
+    );
+
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.upcoming-icon {
+  color: #fb923c;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(249, 115, 22, 0.3),
+      rgba(194, 65, 12, 0.1)
+    );
+
+  border: 1px solid rgba(251, 146, 60, 0.22);
+}
+
+
+/* =========================================
+   STAT CONTENT
+   ========================================= */
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stat-label {
+  color: #e2e8f0;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.stat-content strong {
+  color: #f8fafc;
+  font-size: 22px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.stat-description {
+  margin-top: 3px;
+  color: #71809c;
+  font-size: 9px;
+}
+
+
+/* =========================================
+   TABS
+   ========================================= */
+
+.session-tabs {
+  width: 100%;
+  max-width: 500px;
+
+  margin: 0 auto 22px;
+
+  padding: 4px;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  background:
+    rgba(11, 23, 48, 0.78);
+
+  border: 1px solid rgba(72, 99, 145, 0.2);
+
   border-radius: 12px;
 
-  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-  color: white;
-  font-weight: 600;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 8px 25px rgba(0, 0, 0, 0.15);
+
+  backdrop-filter: blur(15px);
+}
+
+.session-tabs button {
+  position: relative;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #91a0bc;
+
+  padding: 9px 8px;
+
+  border-radius: 9px;
+
+  font-size: 11px;
+  font-weight: 500;
 
   cursor: pointer;
-  transition: all 0.3s ease;
+
+  transition:
+    color 0.25s ease,
+    background 0.25s ease;
 }
 
-.view-btn:hover {
-  background: linear-gradient(135deg, #0ea5e9, #0284c7);
-  transform: scale(1.03);
-}
-
-/* center container */
-.empty-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 80px;
-}
-
-/* card */
-.empty-card {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 40px 60px;
-  border-radius: 16px;
-  text-align: center;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
-
-/* icon */
-.empty-icon {
-  font-size: 50px;
-  margin-bottom: 15px;
-}
-
-/* title */
-.empty-card h3 {
-  font-size: 24px;
-  margin-bottom: 10px;
+.session-tabs button:hover {
   color: #e2e8f0;
 }
 
-/* text */
-.empty-card p {
-  color: #94a3b8;
-  margin-bottom: 20px;
+.session-tabs button.active {
+  color: #f8fafc;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(30, 64, 175, 0.35),
+      rgba(109, 40, 217, 0.28)
+    );
 }
 
-/* button */
-.browse-btn {
-  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-  color: black;
-  padding: 12px 20px;
+.session-tabs button.active::after {
+  content: "";
+
+  position: absolute;
+
+  bottom: -4px;
+  left: 18%;
+  right: 18%;
+
+  height: 2px;
+
   border-radius: 10px;
-  border: none;
-  cursor: pointer;
+
+  background:
+    linear-gradient(
+      90deg,
+      #0ea5e9,
+      #7c3aed
+    );
+}
+
+
+/* =========================================
+   SESSIONS GRID
+   ========================================= */
+
+.sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  align-items: stretch;
+}
+
+
+/* =========================================
+   SESSION CARD
+   ========================================= */
+
+.session-card {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  padding: 17px;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(12, 29, 58, 0.9),
+      rgba(5, 16, 36, 0.92)
+    );
+
+  border: 1px solid rgba(70, 101, 153, 0.3);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.27),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  backdrop-filter: blur(18px);
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.session-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(99, 102, 241, 0.42);
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.34),
+    0 0 25px rgba(59, 130, 246, 0.06);
+}
+
+
+
+/* =========================================
+   CARD TOP
+   ========================================= */
+
+.session-card-top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* =========================================
+   SKILL INFO
+   ========================================= */
+
+.skill-info {
+  min-width: 0;
+  flex: 1;
+  margin-left: 12px;
+}
+
+
+/* =========================================
+   SKILL ICON
+   ========================================= */
+
+.skill-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20, 38, 75, 0.9),
+      rgba(8, 18, 39, 0.95)
+    );
+
+  border: 1px solid rgba(52, 104, 189, 0.42);
+
+  color: #7dd3fc;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  box-shadow:
+    inset 0 0 18px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================
+   SKILL INFO
+   ========================================= */
+
+.skill-info {
+  min-width: 0;
+
+  flex: 1;
+
+  margin-left: 12px;
+}
+
+.skill-info h3 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  line-height: 1.3;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.skill-info p {
+  margin: 4px 0 0;
+
+  color: #9baac4;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   STATUS BADGE
+   ========================================= */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  flex-shrink: 0;
+
+  margin-left: 10px;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  font-size: 9px;
   font-weight: 600;
-  transition: 0.3s;
+
+  white-space: nowrap;
+}
+
+
+.status-dot {
+  font-size: 9px;
+}
+
+
+/* COMPLETED */
+
+.status-badge.completed {
+  color: #4ade80;
+
+  background: rgba(22, 163, 74, 0.18);
+
+  border: 1px solid rgba(34, 197, 94, 0.18);
+}
+
+
+/* LIVE */
+
+.status-badge.live {
+  color: #fb923c;
+
+  background: rgba(234, 88, 12, 0.18);
+
+  border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+
+/* SCHEDULED */
+
+.status-badge.scheduled {
+  color: #38bdf8;
+
+  background: rgba(14, 116, 255, 0.16);
+
+  border: 1px solid rgba(14, 165, 233, 0.18);
+}
+
+
+/* CANCELLED */
+
+.status-badge.cancelled {
+  color: #f87171;
+
+  background: rgba(220, 38, 38, 0.16);
+
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+
+/* =========================================
+   DIVIDER
+   ========================================= */
+
+.card-divider {
+  height: 1px;
+
+  margin: 13px 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(65, 91, 135, 0.18),
+      rgba(65, 91, 135, 0.05)
+    );
+}
+
+
+/* =========================================
+   SESSION META
+   ========================================= */
+
+.session-meta {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  min-height: 32px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 9px;
+
+  border-radius: 8px;
+
+  background: rgba(9, 22, 45, 0.65);
+
+  border: 1px solid rgba(64, 92, 138, 0.16);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #a9b7cd;
+
+  font-size: 10px;
+
+  min-width: 0;
+}
+
+.meta-icon {
+  color: #8da5c8;
+  font-size: 11px;
+}
+
+.meta-item span:last-child {
+  white-space: nowrap;
+}
+
+.meta-separator {
+  width: 1px;
+  height: 15px;
+
+  margin: 0 14px;
+
+  background: rgba(82, 106, 148, 0.2);
+}
+
+
+/* =========================================
+   STATUS MESSAGE
+   ========================================= */
+
+.session-status-line {
+  min-height: 35px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 8px;
+
+  color: #cbd5e1;
+
+  font-size: 10px;
+}
+
+.status-check {
+  width: 14px;
+  height: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 9px;
+
+  flex-shrink: 0;
+}
+
+
+/* COMPLETED MESSAGE */
+
+.session-status-line.completed .status-check {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.16);
+}
+
+
+/* LIVE MESSAGE */
+
+.session-status-line.live .status-check {
+  color: #fb923c;
+  background: rgba(249, 115, 22, 0.16);
+}
+
+
+/* UPCOMING MESSAGE */
+
+.session-status-line.scheduled .status-check {
+  color: #38bdf8;
+  background: rgba(14, 165, 233, 0.16);
+}
+
+
+/* CANCELLED MESSAGE */
+
+.session-status-line.cancelled .status-check {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.16);
+}
+
+
+/* =========================================
+   VIEW BUTTON
+   ========================================= */
+
+.view-btn {
+  width: 100%;
+
+  margin-top: 8px;
+
+  padding: 10px 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border: none;
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      100deg,
+      #0878ed 0%,
+      #315de8 48%,
+      #6634e8 100%
+    );
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 18px rgba(37, 99, 235, 0.2);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.view-btn:hover {
+  transform: translateY(-1px);
+
+  filter: brightness(1.08);
+
+  box-shadow:
+    0 10px 24px rgba(79, 70, 229, 0.3);
+}
+
+.view-btn:active {
+  transform: translateY(0);
+}
+
+.view-btn .arrow {
+  font-size: 14px;
+
+  transition: transform 0.25s ease;
+}
+
+.view-btn:hover .arrow {
+  transform: translateX(3px);
+}
+
+
+/* =========================================
+   EMPTY STATE
+   ========================================= */
+
+.empty-state {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  margin-top: 8px;
+}
+
+.empty-card {
+  width: 100%;
+
+  min-height: 170px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 20px;
+
+  text-align: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 24, 50, 0.78),
+      rgba(5, 15, 34, 0.82)
+    );
+
+  border: 1px solid rgba(69, 99, 148, 0.28);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.24);
+
+  backdrop-filter: blur(16px);
+}
+
+.empty-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 11px;
+
+  color: #8b5cf6;
+
+  background:
+    rgba(124, 58, 237, 0.1);
+
+  border: 1px solid rgba(139, 92, 246, 0.2);
+
+  font-size: 22px;
+}
+
+.empty-card h3 {
+  margin: 0 0 6px;
+
+  color: #f1f5f9;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.empty-card p {
+  margin: 0;
+
+  color: #8190aa;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   BROWSE BUTTON
+   ========================================= */
+
+.browse-btn {
+  margin-top: 18px;
+
+  padding: 10px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  border: none;
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      100deg,
+      #0878ed,
+      #6634e8
+    );
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(59, 130, 246, 0.18);
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
 }
 
 .browse-btn:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.browse-btn span {
+  font-size: 14px;
+}
+
+
+/* =========================================
+   FILTER EMPTY STATE
+   ========================================= */
+
+.filtered-empty {
+  margin-top: 10px;
+}
+
+.filtered-empty .empty-card {
+  min-height: 210px;
+}
+
+
+/* =========================================
+   RESPONSIVE - TABLET
+   ========================================= */
+
+@media (max-width: 900px) {
+
+  .session-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sessions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sessions-wrapper {
+    max-width: 700px;
+  }
+}
+
+
+/* =========================================
+   RESPONSIVE - MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .sessions-container {
+    padding: 30px 14px 50px;
+  }
+
+  .sessions-page-header {
+    margin-bottom: 22px;
+  }
+
+  .sessions-page-header h1 {
+    font-size: 29px;
+  }
+
+  .sessions-page-header p {
+    font-size: 12px;
+  }
+
+  .session-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat-card {
+    min-height: 82px;
+    padding: 12px;
+    gap: 9px;
+  }
+
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+
+  .stat-label {
+    font-size: 9px;
+  }
+
+  .stat-content strong {
+    font-size: 19px;
+  }
+
+  .stat-description {
+    font-size: 8px;
+  }
+
+  .session-tabs {
+    max-width: 100%;
+  }
+
+  .session-tabs button {
+    padding: 9px 4px;
+    font-size: 9px;
+  }
+
+  .session-card {
+    padding: 14px;
+  }
+
+  .session-card-top {
+    align-items: flex-start;
+  }
+
+  .skill-icon {
+    width: 43px;
+    height: 43px;
+  }
+
+  .skill-info {
+    margin-left: 9px;
+  }
+
+  .skill-info h3 {
+    font-size: 15px;
+  }
+
+  .skill-info p {
+    font-size: 10px;
+  }
+
+  .status-badge {
+    padding: 4px 7px;
+    font-size: 8px;
+  }
+
+  .session-meta {
+    padding: 0 7px;
+  }
+
+  .meta-separator {
+    margin: 0 9px;
+  }
+
+  .meta-item {
+    gap: 5px;
+    font-size: 9px;
+  }
+}
+
+
+/* =========================================
+   VERY SMALL DEVICES
+   ========================================= */
+
+@media (max-width: 400px) {
+
+  .sessions-container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .session-stats {
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 10px;
+  }
+
+  .session-tabs button {
+    font-size: 8px;
+  }
+
+  .status-badge {
+    padding: 4px 6px;
+  }
+
+  .session-meta {
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 900px) {
+  .session-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sessions-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .sessions-wrapper {
+    max-width: 700px;
+  }
 }

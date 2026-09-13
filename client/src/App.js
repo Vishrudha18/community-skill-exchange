@@ -1,6 +1,6 @@
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation} from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 
@@ -20,10 +20,16 @@ import BookSession from "./pages/BookSession";
 import LiveSession from "./pages/LiveSession";
 import TestRating from "./pages/TestRating";
 
-function App() {
+function Layout() {
+  const location = useLocation();
+
+  const hideNavbar =
+    location.pathname === "/login" ||
+    location.pathname === "/register";
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {!hideNavbar && <Navbar />}
 
       <Routes>
         {/* 🌍 PUBLIC ROUTES */}
@@ -35,7 +41,7 @@ function App() {
 
         {/* 🔐 PROTECTED ROUTES */}
         <Route
-          path="/dashboard" 
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
@@ -80,17 +86,20 @@ function App() {
         />
 
         <Route path="/sessions" element={<Sessions />} />
-
         <Route path="/sessions/:id" element={<SessionDetails />} />
-
         <Route path="/book/:teacherId" element={<BookSession />} />
-
         <Route path="/live/:id" element={<LiveSession />} />
-
         <Route path="/test-rating" element={<TestRating />} />
       </Routes>
-    </Router>
+    </>
   );
 }
 
+function App() {
+  return (
+    <Router>
+      <Layout />
+    </Router>
+  );
+}
 export default App;

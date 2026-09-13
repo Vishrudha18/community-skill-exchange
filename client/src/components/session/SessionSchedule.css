@@ -1,0 +1,226 @@
+/* =========================================================
+   SessionSchedule — premium glassmorphism schedule card
+   ========================================================= */
+
+.schedule-card {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.1),
+    rgba(99, 102, 241, 0.05)
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 25px;
+
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.schedule-card:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+}
+
+.schedule-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.schedule-icon-box {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: white;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.35);
+}
+
+.schedule-card-header h4 {
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* ================= INPUTS ================= */
+
+.schedule-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.schedule-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 12px 14px;
+
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.schedule-field:focus-within {
+  border-color: #38bdf8;
+  background: rgba(15, 23, 42, 0.75);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+.schedule-field-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.schedule-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.schedule-field input::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+}
+
+/* ================= BUTTON ================= */
+
+.schedule-save-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  box-shadow: 0 10px 26px rgba(56, 189, 248, 0.3);
+
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.schedule-save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(99, 102, 241, 0.4);
+}
+
+.schedule-save-btn:active {
+  transform: translateY(0);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 480px) {
+  .schedule-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   WAITING FOR SCHEDULE
+========================================= */
+
+.schedule-waiting-card {
+  width: 100%;
+  margin-top: 24px;
+  padding: 24px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  color: #dfe7f5;
+}
+
+.schedule-waiting-icon-box {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.25);
+
+  color: #ffc107;
+  font-size: 19px;
+}
+
+.schedule-waiting-card > div:last-child {
+  min-width: 0;
+}
+
+.schedule-waiting-card h4 {
+  margin: 2px 0 7px;
+
+  color: #f1f5ff;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.schedule-waiting-text {
+  margin: 0;
+
+  color: #8998b2;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 650px;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 600px) {
+  .schedule-waiting-card {
+    padding: 20px 0;
+    gap: 12px;
+  }
+
+  .schedule-waiting-icon-box {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+  }
+
+  .schedule-waiting-card h4 {
+    font-size: 16px;
+  }
+
+  .schedule-waiting-text {
+    font-size: 13px;
+  }
+}

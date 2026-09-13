@@ -2,7 +2,18 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./SessionDetails.css";
+import "../../../components/session/SessionReview.css";
+import { FiStar, FiCheckCircle, FiArrowLeft } from "react-icons/fi";
 import ReviewForm from "../../../components/reviews/ReviewForm";
+import ReviewCard from "../../../components/reviews/ReviewCard";
+import SessionHero from "../../../components/session/SessionHero";
+import SessionInfo from "../../../components/session/SessionInfo";
+import SessionParticipants from "../../../components/session/SessionParticipants";
+import SessionStatus from "../../../components/session/SessionStatus";
+import SessionNotes from "../../../components/session/SessionNotes";
+import SessionDocuments from "../../../components/session/SessionDocuments";
+import SessionSchedule, { ScheduleWaiting } from "../../../components/session/SessionSchedule";
+import SessionActions from "../../../components/session/SessionActions";
 
 function SessionDetails() {
   const { id } = useParams();
@@ -12,10 +23,11 @@ function SessionDetails() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [reviewed, setReviewed] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
   const userId = localStorage.getItem("userId");
   const isTeacher = session?.teacher?._id === userId;
-
+  const isLearner = session?.learner?._id === userId;
   // 🔥 Fetch session
   const fetchSession = useCallback(async () => {
     try {
@@ -50,10 +62,27 @@ function SessionDetails() {
   }
 }, [id]);
 
+const fetchReviews = useCallback(async () => {
+  try {
+    const res = await axios.get(
+      `/api/reviews/session/${id}`
+    );
+
+    setReviews(res.data);
+  } catch (err) {
+    console.error(err);
+  }
+}, [id]);
+
 useEffect(() => {
   fetchSession();
   checkReviewStatus();
-}, [fetchSession, checkReviewStatus]);
+  fetchReviews();
+}, [
+  fetchSession,
+  checkReviewStatus,
+  fetchReviews,
+]);
 
   // 🔥 Schedule
   const handleSchedule = async () => {
@@ -94,128 +123,169 @@ useEffect(() => {
     }
   };
 
+  // 🔥 Start Meeting (teacher only, scheduled -> live)
+  const handleStartMeeting = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `/api/sessions/${id}/live`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      navigate(`/live/${id}`);
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Failed to start meeting");
+    }
+  };
+
+  // 🔥 End Meeting (teacher only, live -> completed)
+  const handleEndSession = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `/api/sessions/${id}/complete`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      fetchSession();
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Failed to end session");
+    }
+  };
+
   if (!session) return <p>Loading...</p>;
+
+  const showStartMeeting =
+    isTeacher && session.status === "scheduled" && !!session.scheduledAt;
 
   return (
     <div className="session-wrapper">
       <div className="session-card">
 
+        <button
+          type="button"
+          className="back-link"
+          onClick={() => navigate(-1)}
+        >
+          <FiArrowLeft />
+          Back to Sessions
+        </button>
+
+        <div className="page-header">
+          <h1>
+            Session <span className="gradient-text">Details</span>
+          </h1>
+          <p>View and manage your learning session</p>
+        </div>
+
         {/* HEADER */}
-        <div className="session-header">
-          <h2>{session.title}</h2>
-
-          <p className="countdown">
-  {session.status === "scheduled" && "📅 Scheduled"}
-  {session.status === "live" && "🔴 Live Now"}
-  {session.status === "completed" && "✅ Session Completed"}
-  {session.status === "cancelled" && "❌ Cancelled"}
-</p>
-
-          <div className="status-box">
-            <span className={`status ${session.status}`}>
-              {session.status}
-            </span>
-
-            {session.status === "live" && (
-  <span className="live-badge">🔴 LIVE</span>
-)}
-          </div>
-        </div>
-
+        <SessionHero session={session} />
+        
         {/* INFO */}
-        <div className="session-info">
-          <p><span>Skill</span> {session.skill?.name}</p>
+        <SessionInfo session={session} />
 
-          <p>
-            <span>Scheduled</span>{" "}
-            {session.scheduledAt
-              ? new Date(session.scheduledAt).toLocaleString()
-              : "Not scheduled"}
-          </p>
+        {/* PARTICIPANTS */}
+        <SessionParticipants
+          session={session}
+          isTeacher={isTeacher}
+          isLearner={isLearner}
+        />
 
-          <p>
-  <span>Teacher:</span> {session.teacher?.name}
-</p>
-
-<p>
-  <span>Learner:</span> {session.learner?.name}
-</p>
-
-        </div>
+        {session.status === "missed" && (
+  <div className="missed-box">
+    ⚠️ This session was missed because the
+    meeting was not started within 30 minutes
+    of the scheduled time.
+  </div>
+)}
 
         {/* ✅ ONLY SHOW SCHEDULE IF NOT SCHEDULED */}
         {!session.scheduledAt &&
   isTeacher &&
   session.type !== "booking" && (
-          <div className="schedule-box">
-            <h4>Schedule Session</h4>
-
-            <div className="inputs">
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
-
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-              />
-            </div>
-
-            <button className="primary-btn" onClick={handleSchedule}>
-              Save Schedule
-            </button>
-          </div>
+          <SessionSchedule
+            date={date}
+            time={time}
+            setDate={setDate}
+            setTime={setTime}
+            onSchedule={handleSchedule}
+          />
         )}
 
-        {!session.scheduledAt && !isTeacher && (
-          <p className="waiting-text">
-            Waiting for teacher to schedule...
-          </p>
-        )}
+        {!session.scheduledAt && !isTeacher && <ScheduleWaiting />}
 
-        {/* ACTIONS */}
-        <div className="actions">
-          {session.status !== "completed" &&
- session.status !== "cancelled" && (
-  <button
-  className="join-btn"
-  disabled={session.status !== "live"}
-  onClick={() => navigate(`/live/${session._id}`)}
->
-  {session.status === "live"
-    ? "Join Session"
-    : "Waiting for Teacher to Start"}
-</button>
-)}
-
-{isTeacher && session.status === "live" && (
-  <button className="end-btn">
-    End Session
-  </button>
-)}
-
-          <button className="cancel-btn" onClick={handleCancel}>
-            Cancel
-          </button>
+        {/* STATUS + NOTES */}
+        <div className="status-notes-grid">
+          <SessionStatus session={session} />
+          <SessionNotes session={session} />
         </div>
 
-        {session.status === "completed" && (
-  <div className="review-section">
-    <h3>Session Review</h3>
+        {/* CLASS MATERIALS */}
+        <SessionDocuments sessionId={session._id} isTeacher={isTeacher}/>
 
-    {reviewed ? (
-      <p>✅ You have already reviewed this session.</p>
-    ) : (
-      <ReviewForm
-        sessionId={session._id}
-        onReviewSubmitted={() => {
-  checkReviewStatus();
-  fetchSession();
-}}
-      />
+        {/* ACTIONS */}
+        <SessionActions
+          session={session}
+          isTeacher={isTeacher}
+          showStartMeeting={showStartMeeting}
+          onStartMeeting={handleStartMeeting}
+          onEndSession={handleEndSession}
+          onCancel={handleCancel}
+          onJoin={() => navigate(`/live/${session._id}`)}
+        />
+
+        {session.status === "completed" && (
+  <div className="review-section-card">
+    <div className="review-section-header">
+      <span className="review-section-icon-box">
+        <FiStar />
+      </span>
+      <h3>Session Review</h3>
+    </div>
+
+    {/* Learner can review */}
+    {!reviewed &&
+  isLearner && (
+        <ReviewForm
+          sessionId={session._id}
+          onReviewSubmitted={() => {
+            checkReviewStatus();
+            fetchSession();
+            fetchReviews();
+          }}
+        />
+      )}
+
+    {/* Already reviewed */}
+    {reviewed &&
+  isLearner && (
+        <div className="review-already-badge">
+          <FiCheckCircle />
+          You have already reviewed this session.
+        </div>
+      )}
+
+    {/* Show reviews to both users */}
+    {reviews.length > 0 && (
+      <div className="reviews-list">
+        <h4 className="reviews-list-title">
+          <FiStar />
+          Reviews
+        </h4>
+
+        {reviews.map((review) => (
+          <ReviewCard
+            key={review._id}
+            review={review}
+          />
+        ))}
+      </div>
     )}
   </div>
 )}

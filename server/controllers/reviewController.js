@@ -42,6 +42,13 @@ exports.createReview = async (req, res) => {
       });
     }
 
+    // ✅ ONLY LEARNER CAN REVIEW
+if (session.learner.toString() !== req.user.id) {
+  return res.status(403).json({
+    message: "Only learner can submit review",
+  });
+}
+
     if (session.status !== "completed") {
       return res.status(400).json({
         message: "Reviews are only allowed after session completion",

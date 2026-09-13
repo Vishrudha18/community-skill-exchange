@@ -36,6 +36,26 @@ exports.getSessionById = async (req, res) => {
       return res.status(404).json({ message: "Session not found" });
     }
 
+    if (
+  session.status === "scheduled" &&
+  session.scheduledAt
+) {
+  const now = new Date();
+  const scheduledTime = new Date(
+    session.scheduledAt
+  );
+
+  const gracePeriod = 30 * 60 * 1000;
+
+  if (
+    now.getTime() >
+    scheduledTime.getTime() + gracePeriod
+  ) {
+    session.status = "missed";
+    await session.save();
+  }
+}
+
     res.json(session);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch session" });
@@ -214,6 +234,24 @@ exports.getBookedSlots = async (req, res) => {
 exports.markSessionLive = async (req, res) => {
   try {
     const session = await Session.findById(req.params.id);
+    const now = new Date();
+const scheduledTime = new Date(session.scheduledAt);
+
+// 30 minute grace period
+const gracePeriod = 30 * 60 * 1000;
+
+if (
+  now.getTime() >
+  scheduledTime.getTime() + gracePeriod
+) {
+  session.status = "missed";
+  await session.save();
+
+  return res.status(400).json({
+    message:
+      "Session missed. Meeting was not started within 30 minutes.",
+  });
+}
 
     if (!session) {
       return res.status(404).json({

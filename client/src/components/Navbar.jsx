@@ -70,7 +70,7 @@ function Navbar() {
         {/* 🔐 PRIVATE LINKS (LOGGED IN) */}
         {token && (
           <>
-            <NavLink to="/home" className="nav-link" onClick={() => setMenuOpen(false)}>
+            <NavLink to="/" className="nav-link" onClick={() => setMenuOpen(false)}>
               <FaHome /> Home
             </NavLink>
 
@@ -78,8 +78,8 @@ function Navbar() {
               <FaSearch /> Browse
             </NavLink>
 
-            <NavLink to="/match" className="nav-link" onClick={() => setMenuOpen(false)}>
-              <FaExchangeAlt /> Match
+            <NavLink to="/dashboard" className="nav-link" onClick={() => setMenuOpen(false)}>
+              <FaTachometerAlt /> Dashboard
             </NavLink>
           </>
         )}
@@ -89,16 +89,16 @@ function Navbar() {
           <div className="mobile-only">
             <div className="mobile-divider" />
 
-            <NavLink to="/dashboard" className="nav-link" onClick={() => setMenuOpen(false)}>
-              <FaTachometerAlt /> Dashboard
+            <NavLink to="/sessions" className="nav-link" onClick={() => setMenuOpen(false)}>
+              <FaCalendarAlt /> Sessions
+            </NavLink>
+
+            <NavLink to="/match" className="nav-link" onClick={() => setMenuOpen(false)}>
+              <FaExchangeAlt /> Match
             </NavLink>
 
             <NavLink to="/requests" className="nav-link" onClick={() => setMenuOpen(false)}>
               <FaClipboardList /> Requests
-            </NavLink>
-
-            <NavLink to="/sessions" className="nav-link" onClick={() => setMenuOpen(false)}>
-              <FaCalendarAlt /> Sessions
             </NavLink>
 
             <button className="nav-link logout" onClick={handleLogout}>
@@ -138,16 +138,16 @@ function Navbar() {
                 <div className="dropdown">
                   <p className="dropdown-user">{user?.name || "User"}</p>
 
-                  <NavLink to="/dashboard" className="dropdown-item">
-                    <FaTachometerAlt /> Dashboard
-                  </NavLink>
-
-                  <NavLink to="/requests" className="dropdown-item">
-                    <FaClipboardList /> Requests
-                  </NavLink>
-
                   <NavLink to="/sessions" className="dropdown-item">
                     <FaCalendarAlt /> Sessions
+                  </NavLink>
+                  
+                  <NavLink to="/match" className="nav-link" onClick={() => setMenuOpen(false)}>
+                    <FaExchangeAlt /> Match
+                  </NavLink>
+            
+                  <NavLink to="/requests" className="dropdown-item">
+                    <FaClipboardList /> Requests
                   </NavLink>
 
                   <div className="dropdown-divider" />
@@ -162,7 +162,7 @@ function Navbar() {
         ) : (
           <>
             <NavLink to="/login" className="btn-login">Login</NavLink>
-            <NavLink to="/register" className="btn-register">Register</NavLink>
+            
           </>
         )}
       </div>
