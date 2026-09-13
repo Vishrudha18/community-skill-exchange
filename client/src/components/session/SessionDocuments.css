@@ -8,6 +8,10 @@
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
 }
 
+/* =====================================================
+   HEADER
+===================================================== */
+
 .session-documents-header {
   display: flex;
   align-items: center;
@@ -68,6 +72,10 @@
   white-space: nowrap;
 }
 
+/* =====================================================
+   UPLOAD
+===================================================== */
+
 .document-file-input {
   display: none;
 }
@@ -107,9 +115,17 @@
   font-size: 16px;
 }
 
+/* =====================================================
+   CONTENT
+===================================================== */
+
 .session-documents-content {
   padding: 20px 24px 24px;
 }
+
+/* =====================================================
+   SUCCESS MESSAGE
+===================================================== */
 
 .document-success-message {
   display: flex;
@@ -127,9 +143,75 @@
 
 .document-success-message svg {
   font-size: 17px;
+  flex-shrink: 0;
 }
 
-/* Loading */
+/* =====================================================
+   ERROR MESSAGE
+===================================================== */
+
+.document-error-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 24px 0;
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 82, 96, 0.28);
+  border-radius: 11px;
+  background: rgba(255, 70, 85, 0.08);
+  color: #ff8c96;
+}
+
+.document-error-message > svg {
+  flex-shrink: 0;
+  font-size: 19px;
+}
+
+.document-error-message > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.document-error-message strong {
+  color: #ff9ca5;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.document-error-message span {
+  color: #d58a92;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.document-error-close {
+  width: 30px;
+  height: 30px;
+  margin-left: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #d97882;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.document-error-close:hover {
+  background: rgba(255, 70, 85, 0.12);
+  color: #ffabb2;
+}
+
+/* =====================================================
+   LOADING
+===================================================== */
 
 .documents-loading {
   min-height: 100px;
@@ -156,7 +238,9 @@
   }
 }
 
-/* Empty */
+/* =====================================================
+   EMPTY
+===================================================== */
 
 .documents-empty {
   min-height: 150px;
@@ -189,7 +273,7 @@
 }
 
 .documents-empty p {
-  max-width: 420px;
+  max-width: 520px;
   margin: 0;
   color: #75839e;
   font-size: 13px;
@@ -215,7 +299,9 @@
   background: rgba(0, 132, 255, 0.18);
 }
 
-/* Error */
+/* =====================================================
+   ERROR STATE
+===================================================== */
 
 .documents-error {
   min-height: 80px;
@@ -227,7 +313,9 @@
   font-size: 14px;
 }
 
-/* List */
+/* =====================================================
+   DOCUMENT LIST
+===================================================== */
 
 .documents-list {
   display: flex;
@@ -297,11 +385,17 @@
   font-size: 12px;
 }
 
+/* =====================================================
+   DOCUMENT ACTIONS
+===================================================== */
+
 .document-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
   flex-shrink: 0;
+  flex-wrap: wrap;
 }
 
 .document-action-btn {
@@ -324,7 +418,7 @@
     color 0.2s ease;
 }
 
-.document-action-btn:hover {
+.document-action-btn:hover:not(:disabled) {
   background: rgba(83, 67, 180, 0.2);
   border-color: rgba(130, 103, 255, 0.45);
   color: #c4b5ff;
@@ -334,7 +428,318 @@
   font-size: 15px;
 }
 
-/* Responsive */
+.document-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =====================================================
+   RENAME BUTTON
+===================================================== */
+
+.document-rename-btn {
+  border-color: rgba(0, 153, 255, 0.25);
+  background: rgba(0, 132, 255, 0.07);
+  color: #55b9ff;
+}
+
+.document-rename-btn:hover:not(:disabled) {
+  background: rgba(0, 132, 255, 0.15);
+  border-color: rgba(0, 153, 255, 0.45);
+  color: #7ac8ff;
+}
+
+/* =====================================================
+   DELETE BUTTON
+===================================================== */
+
+.document-delete-btn {
+  border-color: rgba(255, 82, 96, 0.25);
+  background: rgba(255, 70, 85, 0.07);
+  color: #ff858f;
+}
+
+.document-delete-btn:hover:not(:disabled) {
+  background: rgba(255, 70, 85, 0.15);
+  border-color: rgba(255, 82, 96, 0.45);
+  color: #ff9da5;
+}
+
+/* =====================================================
+   CUSTOM MODAL
+===================================================== */
+
+.document-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(2, 7, 18, 0.72);
+  backdrop-filter: blur(8px);
+
+  animation: document-modal-overlay-in 0.2s ease;
+}
+
+.document-modal {
+  width: 100%;
+  max-width: 460px;
+
+  padding: 28px;
+
+  border: 1px solid rgba(91, 145, 220, 0.25);
+  border-radius: 18px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(13, 28, 57, 0.98),
+    rgba(7, 18, 39, 0.98)
+  );
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+
+  animation: document-modal-in 0.22s ease;
+}
+
+/* =====================================================
+   MODAL ICON
+===================================================== */
+
+.document-modal-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 13px;
+
+  font-size: 21px;
+}
+
+.document-modal-icon.rename {
+  background: rgba(0, 153, 255, 0.1);
+  border: 1px solid rgba(0, 153, 255, 0.25);
+  color: #55b9ff;
+}
+
+.document-modal-icon.delete {
+  background: rgba(255, 70, 85, 0.1);
+  border: 1px solid rgba(255, 82, 96, 0.25);
+  color: #ff7f89;
+}
+
+/* =====================================================
+   MODAL CONTENT
+===================================================== */
+
+.document-modal-content h3 {
+  margin: 0 0 8px;
+
+  color: #f2f5ff;
+
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.document-modal-content p {
+  margin: 0;
+
+  color: #8e9cb7;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.document-modal-content p strong {
+  color: #dce5f7;
+  font-weight: 600;
+}
+
+.document-modal-warning {
+  display: block;
+  margin-top: 10px;
+
+  color: #a8757c;
+
+  font-size: 12px;
+}
+
+/* =====================================================
+   RENAME INPUT
+===================================================== */
+
+.document-rename-input {
+  width: 100%;
+  box-sizing: border-box;
+
+  margin-top: 18px;
+  padding: 12px 14px;
+
+  border: 1px solid rgba(90, 130, 190, 0.3);
+  border-radius: 10px;
+
+  outline: none;
+
+  background: rgba(4, 13, 29, 0.8);
+  color: #edf3ff;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.document-rename-input::placeholder {
+  color: #65748e;
+}
+
+.document-rename-input:focus {
+  border-color: rgba(0, 153, 255, 0.55);
+  background: rgba(5, 16, 35, 0.95);
+  box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.08);
+}
+
+/* =====================================================
+   MODAL ACTIONS
+===================================================== */
+
+.document-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  margin-top: 24px;
+}
+
+.document-modal-actions button {
+  min-height: 38px;
+
+  padding: 0 16px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.document-modal-actions button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.document-modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Cancel */
+
+.document-modal-cancel {
+  border: 1px solid rgba(89, 129, 186, 0.22);
+  background: rgba(20, 38, 70, 0.65);
+  color: #aebbd0;
+}
+
+.document-modal-cancel:hover:not(:disabled) {
+  background: rgba(30, 52, 88, 0.8);
+  border-color: rgba(105, 145, 205, 0.35);
+  color: #d0daea;
+}
+
+/* Save */
+
+.document-modal-primary {
+  border: 1px solid rgba(0, 153, 255, 0.35);
+  background: rgba(0, 132, 255, 0.14);
+  color: #61bdff;
+}
+
+.document-modal-primary:hover:not(:disabled) {
+  background: rgba(0, 132, 255, 0.22);
+  border-color: rgba(0, 153, 255, 0.5);
+}
+
+/* Delete */
+
+.document-modal-danger {
+  border: 1px solid rgba(255, 82, 96, 0.3);
+  background: rgba(255, 70, 85, 0.1);
+  color: #ff8b95;
+}
+
+.document-modal-danger:hover:not(:disabled) {
+  background: rgba(255, 70, 85, 0.18);
+  border-color: rgba(255, 82, 96, 0.48);
+  color: #ffa3aa;
+}
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes document-modal-overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes document-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+  .document-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .document-main {
+    width: 100%;
+  }
+
+  .document-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
 
 @media (max-width: 800px) {
   .session-documents-header {
@@ -353,39 +758,68 @@
 }
 
 @media (max-width: 600px) {
-  .document-item {
-    align-items: flex-start;
-    flex-direction: column;
+  .session-documents-header {
+    padding: 18px;
   }
 
-  .document-main {
-    width: 100%;
+  .session-documents-content {
+    padding: 16px 18px 20px;
+  }
+
+  .document-success-message,
+  .document-error-message {
+    margin-left: 18px;
+    margin-right: 18px;
   }
 
   .document-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     width: 100%;
   }
 
   .document-action-btn {
-    flex: 1;
+    width: 100%;
+  }
+
+  .document-modal {
+    padding: 22px;
+  }
+
+  .document-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .document-modal-actions button {
+    width: 100%;
   }
 }
 
-/* Delete */
+/* =====================================================
+   INLINE MODAL ERROR
+===================================================== */
 
-.document-delete-btn {
-  border-color: rgba(255, 82, 96, 0.25);
+.modal-inline-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  margin-top: 14px;
+  padding: 10px 12px;
+
+  border: 1px solid rgba(255, 82, 96, 0.25);
+  border-radius: 9px;
+
   background: rgba(255, 70, 85, 0.07);
-  color: #ff858f;
+
+  color: #ff8e98;
+
+  font-size: 12px;
+  line-height: 1.5;
 }
 
-.document-delete-btn:hover:not(:disabled) {
-  background: rgba(255, 70, 85, 0.15);
-  border-color: rgba(255, 82, 96, 0.45);
-  color: #ff9da5;
-}
-
-.document-delete-btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+.modal-inline-error svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-size: 15px;
 }
