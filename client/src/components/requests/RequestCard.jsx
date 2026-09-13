@@ -5,6 +5,7 @@ import {
   FiCheckCircle,
   FiXCircle,
   FiClock,
+  FiArrowRight,
 } from "react-icons/fi";
 import "./RequestCard.css";
 
@@ -36,7 +37,7 @@ function RequestCard({
 
   return (
     <div className="premium-request-card">
-      {/* LEFT */}
+      {/* User */}
       <div className="request-user-section">
         <div className="request-avatar">
           <span>{initials}</span>
@@ -51,12 +52,13 @@ function RequestCard({
         </div>
       </div>
 
-      {/* CENTER */}
+      {/* Request Details */}
       <div className="request-details">
         <div className="detail-box">
           <div className="detail-icon">
             <FiBookOpen />
           </div>
+
           <div>
             <span>Skill</span>
             <h4>{skill.name || "N/A"}</h4>
@@ -67,6 +69,7 @@ function RequestCard({
           <div className="detail-icon">
             <FiTrendingUp />
           </div>
+
           <div>
             <span>Level</span>
             <h4>{skill.level || "N/A"}</h4>
@@ -77,6 +80,7 @@ function RequestCard({
           <div className="detail-icon">
             <FiMail />
           </div>
+
           <div>
             <span>Email</span>
             <h4>{email}</h4>
@@ -84,15 +88,17 @@ function RequestCard({
         </div>
       </div>
 
-      {/* RIGHT */}
+      {/* Actions / Status */}
       <div className="request-actions-panel">
         <span className={`badge badge-${status}`}>
           {status === "pending" && <FiClock />}
           {status === "accepted" && <FiCheckCircle />}
           {status === "rejected" && <FiXCircle />}
+
           {status.toUpperCase()}
         </span>
 
+        {/* Sent + Pending */}
         {type === "sent" && status === "pending" && (
           <button className="btn cancel" onClick={onCancel}>
             <FiXCircle />
@@ -100,6 +106,7 @@ function RequestCard({
           </button>
         )}
 
+        {/* Received + Pending */}
         {type === "received" && status === "pending" && (
           <div className="action-buttons">
             <button
@@ -118,6 +125,27 @@ function RequestCard({
             >
               <FiXCircle />
               Reject
+            </button>
+          </div>
+        )}
+
+        {/* Accepted */}
+        {status === "accepted" && (
+          <div className="accepted-state">
+            <div className="accepted-message">
+              <div className="accepted-icon">
+                <FiCheckCircle />
+              </div>
+
+              <div className="accepted-text">
+                <strong>Request Accepted</strong>
+                <span>Collaboration is active</span>
+              </div>
+            </div>
+
+            <button className="accepted-session-btn" type="button">
+              View Session
+              <FiArrowRight />
             </button>
           </div>
         )}
