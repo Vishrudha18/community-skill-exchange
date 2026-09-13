@@ -216,6 +216,7 @@ const Match = () => {
         {requestError && (
           <div className="request-error">
             <span>{requestError}</span>
+
             <button type="button" onClick={() => setRequestError("")}>
               Dismiss
             </button>
@@ -305,30 +306,41 @@ const Match = () => {
                   </div>
                 </div>
 
-                <button
-                  className={`request-btn ${requested ? "requested" : ""} ${
-                    requesting ? "requesting" : ""
-                  }`}
-                  disabled={requested || requesting}
-                  onClick={() => requestSkill(match.user._id, match._id)}
-                >
-                  {requesting ? (
-                    <>
-                      <span className="request-spinner" />
-                      <span>Sending Request...</span>
-                    </>
-                  ) : requested ? (
-                    <>
-                      <FiCheck />
-                      <span>Request Sent</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Request Skill</span>
-                      <FiArrowRight />
-                    </>
-                  )}
-                </button>
+                {requested ? (
+                  <div className="request-complete">
+                    <div className="request-complete-main">
+                      <div className="request-complete-icon">
+                        <FiCheck />
+                      </div>
+
+                      <div>
+                        <strong>Request Sent</strong>
+
+                        <span>Waiting for a response</span>
+                      </div>
+                    </div>
+
+                    <FiCheckCircle className="request-complete-check" />
+                  </div>
+                ) : (
+                  <button
+                    className={`request-btn ${requesting ? "requesting" : ""}`}
+                    disabled={requesting}
+                    onClick={() => requestSkill(match.user._id, match._id)}
+                  >
+                    {requesting ? (
+                      <>
+                        <span className="request-spinner" />
+                        <span>Sending Request...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Request Skill</span>
+                        <FiArrowRight />
+                      </>
+                    )}
+                  </button>
+                )}
               </article>
             );
           })}
