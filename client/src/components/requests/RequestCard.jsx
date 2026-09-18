@@ -15,6 +15,7 @@ function RequestCard({
   onAccept,
   onReject,
   onCancel,
+  onViewSession,
   updating = false,
 }) {
   const skill = request.skill || {};
@@ -143,7 +144,11 @@ function RequestCard({
               </div>
             </div>
 
-            <button className="accepted-session-btn" type="button">
+            <button
+              className="accepted-session-btn"
+              type="button"
+              onClick={onViewSession}
+            >
               View Session
               <FiArrowRight />
             </button>

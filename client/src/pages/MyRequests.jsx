@@ -1,9 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Requests.css";
 import RequestCard from "../components/requests/RequestCard";
 
 function MyRequests({ onCountChange }) {
   const [requests, setRequests] = useState([]);
+
+  const navigate = useNavigate();
+
   const token = localStorage.getItem("token");
 
   const fetchRequests = useCallback(async () => {
@@ -28,11 +32,15 @@ function MyRequests({ onCountChange }) {
   }, [token]);
 
   useEffect(() => {
-    if (token) fetchRequests();
+    if (token) {
+      fetchRequests();
+    }
   }, [token, fetchRequests]);
 
   useEffect(() => {
-    if (onCountChange) onCountChange(requests.length);
+    if (onCountChange) {
+      onCountChange(requests.length);
+    }
   }, [requests, onCountChange]);
 
   const cancelRequest = async (id) => {
@@ -44,7 +52,7 @@ function MyRequests({ onCountChange }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       const data = await res.json();
@@ -56,8 +64,13 @@ function MyRequests({ onCountChange }) {
 
       setRequests((prev) =>
         prev.map((req) =>
-          req._id === id ? { ...req, status: "cancelled" } : req
-        )
+          req._id === id
+            ? {
+                ...req,
+                status: "cancelled",
+              }
+            : req,
+        ),
       );
     } catch (err) {
       console.error(err);
@@ -65,24 +78,34 @@ function MyRequests({ onCountChange }) {
     }
   };
 
-  return (
-  <>
-    <h2>My Skill Requests</h2>
+  const handleViewSession = (request) => {
+    if (!request.session?._id) {
+      alert("Session information is not available yet.");
+      return;
+    }
 
-    {requests.length === 0 ? (
-      <p>No requests yet</p>
-    ) : (
-      requests.map((req) => (
-        <RequestCard
-          key={req._id}
-          request={req}
-          type="sent"
-          onCancel={() => cancelRequest(req._id)}
-        />
-      ))
-    )}
-  </>
-);
+    navigate(`/sessions/${request.session._id}`);
+  };
+
+  return (
+    <>
+      <h2>My Skill Requests</h2>
+
+      {requests.length === 0 ? (
+        <p>No requests yet</p>
+      ) : (
+        requests.map((req) => (
+          <RequestCard
+            key={req._id}
+            request={req}
+            type="sent"
+            onCancel={() => cancelRequest(req._id)}
+            onViewSession={() => handleViewSession(req)}
+          />
+        ))
+      )}
+    </>
+  );
 }
 
-export default MyRequests; 
+export default MyRequests;

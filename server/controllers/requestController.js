@@ -54,6 +54,7 @@ exports.createRequest = async (req, res) => {
     res.status(201).json(populatedRequest);
   } catch (error) {
     console.error("CREATE REQUEST ERROR:", error);
+
     res.status(500).json({
       message: "Failed to create request",
     });
@@ -72,8 +73,32 @@ exports.getReceivedRequests = async (req, res) => {
       .populate("provider", "name email")
       .populate("skill", "name level");
 
-    res.json(requests);
+    const requestIds = requests.map((request) => request._id);
+
+    const sessions = await Session.find({
+      request: { $in: requestIds },
+    });
+
+    const sessionMap = new Map(
+      sessions.map((session) => [session.request.toString(), session]),
+    );
+
+    const requestsWithSessions = requests.map((request) => {
+      const requestObject = request.toObject();
+
+      const session = sessionMap.get(request._id.toString());
+
+      if (session) {
+        requestObject.session = session;
+      }
+
+      return requestObject;
+    });
+
+    res.json(requestsWithSessions);
   } catch (error) {
+    console.error("GET RECEIVED REQUESTS ERROR:", error);
+
     res.status(500).json({
       message: "Failed to fetch received requests",
     });
@@ -91,8 +116,32 @@ exports.getSentRequests = async (req, res) => {
       .populate("provider", "name email")
       .populate("skill", "name level");
 
-    res.json(requests);
+    const requestIds = requests.map((request) => request._id);
+
+    const sessions = await Session.find({
+      request: { $in: requestIds },
+    });
+
+    const sessionMap = new Map(
+      sessions.map((session) => [session.request.toString(), session]),
+    );
+
+    const requestsWithSessions = requests.map((request) => {
+      const requestObject = request.toObject();
+
+      const session = sessionMap.get(request._id.toString());
+
+      if (session) {
+        requestObject.session = session;
+      }
+
+      return requestObject;
+    });
+
+    res.json(requestsWithSessions);
   } catch (error) {
+    console.error("GET SENT REQUESTS ERROR:", error);
+
     res.status(500).json({
       message: "Failed to fetch sent requests",
     });
@@ -132,26 +181,26 @@ exports.acceptRequest = async (req, res) => {
     });
 
     if (!session) {
-  console.log("Creating new session...");
+      console.log("Creating new session...");
 
-  session = await Session.create({
-    teacher: request.provider,
-    learner: request.requester,
-    skill: request.skill,
-    request: request._id,
+      session = await Session.create({
+        teacher: request.provider,
+        learner: request.requester,
+        skill: request.skill,
+        request: request._id,
 
-    title: "Skill Learning Session",
-    meetingType: "video",
-    status: "scheduled",
+        title: "Skill Learning Session",
+        meetingType: "video",
+        status: "scheduled",
 
-    startedAt: null,
-    endedAt: null,
-    teacherJoined: false,
-    learnerJoined: false,
-  });
+        startedAt: null,
+        endedAt: null,
+        teacherJoined: false,
+        learnerJoined: false,
+      });
 
-  console.log("Session created successfully:", session);
-}
+      console.log("Session created successfully:", session);
+    }
 
     await Notification.create({
       user: request.requester,
@@ -166,6 +215,7 @@ exports.acceptRequest = async (req, res) => {
     });
   } catch (error) {
     console.error("ACCEPT REQUEST ERROR:", error);
+
     res.status(500).json({
       message: "Failed to accept request",
     });
@@ -212,6 +262,7 @@ exports.rejectRequest = async (req, res) => {
     });
   } catch (error) {
     console.error("REJECT REQUEST ERROR:", error);
+
     res.status(500).json({
       message: "Failed to reject request",
     });
@@ -251,6 +302,7 @@ exports.cancelRequest = async (req, res) => {
     });
   } catch (error) {
     console.error("CANCEL REQUEST ERROR:", error);
+
     res.status(500).json({
       message: "Failed to cancel request",
     });
@@ -269,6 +321,8 @@ exports.getRequestCount = async (req, res) => {
 
     res.json({ count });
   } catch (error) {
+    console.error("GET REQUEST COUNT ERROR:", error);
+
     res.status(500).json({
       message: "Failed to fetch count",
     });

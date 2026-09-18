@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Requests.css";
 import RequestCard from "../components/requests/RequestCard";
 
@@ -7,20 +8,19 @@ function ReceivedRequests({ onCountChange }) {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
 
+  const navigate = useNavigate();
+
   const token = localStorage.getItem("token");
 
   const fetchRequests = useCallback(async () => {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        "http://localhost:5000/api/requests/received",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch("http://localhost:5000/api/requests/received", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const data = await res.json();
 
@@ -38,11 +38,15 @@ function ReceivedRequests({ onCountChange }) {
   }, [token]);
 
   useEffect(() => {
-    if (token) fetchRequests();
+    if (token) {
+      fetchRequests();
+    }
   }, [token, fetchRequests]);
 
   useEffect(() => {
-    if (onCountChange) onCountChange(requests.length);
+    if (onCountChange) {
+      onCountChange(requests.length);
+    }
   }, [requests, onCountChange]);
 
   const updateStatus = async (id, action) => {
@@ -56,7 +60,7 @@ function ReceivedRequests({ onCountChange }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       const data = await res.json();
@@ -72,9 +76,10 @@ function ReceivedRequests({ onCountChange }) {
             ? {
                 ...req,
                 status: action === "accept" ? "accepted" : "rejected",
+                session: action === "accept" ? data.session : req.session,
               }
-            : req
-        )
+            : req,
+        ),
       );
     } catch (err) {
       console.error(err);
@@ -82,6 +87,15 @@ function ReceivedRequests({ onCountChange }) {
     } finally {
       setUpdatingId(null);
     }
+  };
+
+  const handleViewSession = (request) => {
+    if (!request.session?._id) {
+      alert("Session information is not available yet.");
+      return;
+    }
+
+    navigate(`/sessions/${request.session._id}`);
   };
 
   return (
@@ -101,6 +115,7 @@ function ReceivedRequests({ onCountChange }) {
             updating={updatingId === req._id}
             onAccept={() => updateStatus(req._id, "accept")}
             onReject={() => updateStatus(req._id, "reject")}
+            onViewSession={() => handleViewSession(req)}
           />
         ))
       )}
